@@ -1,43 +1,55 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   start_banquet.c                                    :+:      :+:    :+:   */
+/*   philosphers.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/17 15:58:25 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/10/19 13:23:09 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-static void *hunger_games(void *job)
+static void hunger_games(t_philo *p)
 {
-    return (job);    
+    while(!p->over)
+        return ;
 }
 
-int start_banquet(t_philo *p)
+static int init_thread(t_philo *p)
 {
     int i;
-    pthread_t *tid;
-    pthread_mutex_t lock;
 
     i = -1;
-    tid = malloc(sizeof(pthread_t) * p->num);
-    if (!tid)
-        return (error_msg("Error\nMalloc failure in tid creation\n"));
-    if (pthread_mutex_init(&lock, NULL) == -1)
+    if (pthread_mutex_init(&p->lock, NULL) == -1)
         return (error_msg("Error\nMutex init failed\n"));
     while(++i < p->num)
     {
-        if (pthread_create(&tid[i], NULL, &hunger_games, NULL) == -1)
+        if (pthread_create(&p->philo[i].life_tid, NULL, &thread_routine, &p->philo[i]) == -1)
             return (error_msg("Error\nFailed to create thread\n"));
     }
+    gettimeofday(&p->start, NULL);
+    return (0);
+}
+
+static void end_thread(t_philo *p)
+{
+    int i;
+    
     i = -1;
     while (++i < p->num)
-        pthread_join(tid[i], NULL);
-    pthread_mutex_destroy(&lock);
-    free(tid);
+        pthread_join(p->philo[i].life_tid, (void *)&p->philo[i]);
+    pthread_mutex_destroy(&p->lock);
+    free(p->philo);
+}
+
+int philosophers(t_philo *p)
+{
+    if (init_thread(p) > 0)
+        return (EXIT_FAILURE);
+    hunger_games(p);
+    end_thread(p);
     return (0);
 }
