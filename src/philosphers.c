@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/19 18:26:03 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/10/25 15:09:10 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,15 @@ static int init_thread(t_params *p, t_philo *philo)
         philo[i].dead = 0;
         philo[i].iter_num = 0;
         philo[i].eat_time = 0;
+        if (pthread_mutex_init(&philo[i].left_fork, NULL) == -1)
+            return (error_msg("Error\nLeft fork mutex init failed\n"));
+        if (pthread_mutex_init(&philo[i].right_fork, NULL) == -1)
+            return (error_msg("Error\nRight fork mutex init failed\n"));
         philo[i].params = p;
         if (pthread_create(&philo[i].life_tid, NULL, &thread_routine, &philo[i]) == -1)
             return (error_msg("Error\nFailed to create thread\n"));
     }
-    gettimeofday(&p->start, NULL);
+    // p->start = current_time();
     return (0);
 }
 
@@ -53,10 +57,8 @@ static void end_thread(t_params *p, t_philo *philo)
 
 int philosophers(t_params *params)
 {
-    int     i;
     t_philo *philo;
 
-    i = -1;
     philo = malloc(sizeof(t_philo) * params->num);
     if (!philo)
         return (0);
