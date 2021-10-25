@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:16:12 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/25 17:31:36 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/10/25 17:33:35 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void ft_think(t_philo *p)
 	now = p->time;
 	while (now - p->time < p->params->time2die)
 		now = current_time();   
-	if (now - p->time > p->params->time2eat)
+	if (!p->params->over && now - p->time > p->params->time2eat)
 	{
 		printf("%lu Philospspher %d %s\n", p->time, p->id, DIE);
 		p->params->over = 1;
@@ -34,7 +34,7 @@ void ft_sleep(t_philo *p)
 	
 	printf("%lu Philospspher %d %s\n", p->time, p->id, SLEEP);
 	now = p->time;
-	while (now - p->time < p->params->time2sleep)
+	while (!p->params->over && now - p->time < p->params->time2sleep)
 	{
 		if (now - p->time > p->params->time2die)
 		{
@@ -55,7 +55,7 @@ void ft_eat(t_philo *p)
 	pthread_mutex_lock(&p->right_fork);
 	printf("%lu Philospspher %d %s\n", p->time, p->id, EAT);
 	now = p->time;
-	while (now - p->time < p->params->time2eat)
+	while (!p->params->over && now - p->time < p->params->time2eat)
 	{
 		if (now - p->time > p->params->time2die)
 		{
