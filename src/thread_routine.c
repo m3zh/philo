@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:16:12 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/26 11:31:30 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/10/26 12:41:10 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void someone_died(long int now, t_philo *p)
 {
-	printf("[ %ld ms ] Philosopher %d %s\n", now - p->params->start, p->id, DIE);
+	printf("[ %ld ms ] Philosopher %d %s\n", now, p->id, DIE);
 	p->params->over = 1;
 	p->dead = 1;
 }
@@ -24,11 +24,11 @@ void ft_think(t_philo *p)
 	long int now;
 	
 	now = current_time();
-	printf("[ %ld ms ] Philosopher %d %s\n", now - p->time, p->id, THINK);
-	while (now - p->time < p->params->time2die)
-		now = current_time();   
-	if (!p->params->over && now - p->time > p->params->time2eat)
-		return (someone_died(now, p));
+	print_routine(now - p->start, p, THINK);
+	while (now - p->last_sleep < p->params->time2die)
+		now = current_time();
+	if (!p->params->over && (now - p->last_meal) > p->params->time2eat)
+		return (someone_died(now - p->last_meal, p));
 }
 
 void ft_sleep(t_philo *p)
@@ -36,36 +36,37 @@ void ft_sleep(t_philo *p)
 	long int now;
 	
 	now = current_time();
-	printf("[ %ld ms ] Philosopher %d %s\n", now - p->params->start, p->id, SLEEP);
-	while (!p->params->over && now - p->time < p->params->time2sleep)
+	while (!p->params->over && (now - p->last_meal) < p->params->time2sleep)
 	{
-		if (now - p->time > p->params->time2die)
-			return (someone_died(now, p));
+		if (now - p->last_meal > p->params->time2die)
+			return (someone_died(now - p->last_meal, p));
 		now = current_time();   
-	}     
+	}    
+	p->last_sleep = now;
+	print_routine(now - p->start, p, SLEEP);
 }
 
 void ft_eat(t_philo *p)
 {
 	long int now;
 
-	now = current_time();
 	pthread_mutex_lock(&p->left_fork);
-	printf("[ %ld ms ] Philosopher %d %s (left)\n", now - p->params->start, p->id, FORK);
+	print_routine(current_time() - p->last_meal, p, FORK);
 	if (p->params->num > 1)
 		pthread_mutex_lock(&p->right_fork);
-	now = current_time();
-	printf("[ %ld ms ] Philosopher %d %s (right)\n", now - p->params->start, p->id, FORK);
+	print_routine(current_time() - p->last_meal, p, FORK);
 	now = current_time();
 	if (now - p->last_meal > p->params->time2die)
-		return (someone_died(now, p));
-	printf("[ %ld ms ] Philosopher %d %s\n", now - p->params->start, p->id, EAT);
-	while (!p->params->over && now - p->time < p->params->time2eat)
+		return (someone_died(now - p->last_meal, p));
+	while (!p->params->over && (now - p->last_meal) < p->params->time2eat)
 	{
-		if (now - p->time > p->params->time2die)
-			return (someone_died(now, p));
+		if (now - p->last_meal > p->params->time2die)
+			return (someone_died(now - p->last_meal, p));
 		now = current_time();   
-	}         
+	}
+	p->last_meal = now;
+	print_routine(p->last_meal - p->start, p, EAT); 
+	p->iter_num++;
 	pthread_mutex_unlock(&p->left_fork);
 	if (p->params->num > 1)
 		pthread_mutex_unlock(&p->right_fork);
@@ -78,13 +79,14 @@ void *thread_routine(void *job)
 	philo = (t_philo *)job;
 	if (philo->id&1)
 		ft_usleep(5);
-	philo->time = current_time();
-	while (!philo->dead && !philo->params->over)
+	philo->start = current_time();
+	philo->last_meal = philo->start;
+	while (!philo->dead || !philo->params->over)
 	{
 		ft_eat(philo);
-		if (!philo->dead && !philo->params->over)
+		if (!philo->dead || !philo->params->over)
 			ft_sleep(philo);
-		if (!philo->dead && !philo->params->over)
+		if (!philo->dead || !philo->params->over)
 			ft_think(philo);        
 	}   
 	return (NULL);    

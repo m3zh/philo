@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:32:05 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/26 11:29:06 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/10/26 12:37:57 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,9 @@ typedef struct s_philo
     int id;
     int dead;
     int iter_num;
+    long int    start;
     long int    last_meal;
-    long int    time;
+    long int    last_sleep;
     pthread_t life_tid;
     pthread_t death_tid;
     pthread_mutex_t left_fork;
@@ -57,9 +58,11 @@ typedef struct s_philo
 
 int         philosophers(t_params *p);
 void        *thread_routine(void *job);
+void        print_routine(long int now, t_philo *p, char *action);
 long int    current_time(void);
 int		    ft_atoi(const char *str);
 void	    ft_usleep(long int time);
 int         error_msg(char *s);
+
 
 #endif

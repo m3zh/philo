@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/26 11:29:42 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/10/26 12:00:15 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ static int init_thread(t_params *p, t_philo *philo)
         philo[i].id = i;
         philo[i].dead = 0;
         philo[i].iter_num = 0;
-        philo[i].last_meal = p->start;
+        philo[i].last_meal = 0;
+        philo[i].last_sleep = 0;
         if (pthread_mutex_init(&philo[i].left_fork, NULL) == -1)
             return (error_msg("Error\nLeft fork mutex init failed\n"));
         if (pthread_mutex_init(&philo[i].right_fork, NULL) == -1)
