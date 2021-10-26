@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:32:05 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/25 15:09:30 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/10/26 11:29:06 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #include <limits.h>
 #include <sys/time.h>
 
-#define FORK "has taken a fork";
+#define FORK "has taken a fork"
 #define EAT "is eating"
 #define SLEEP "is sleeping"
 #define THINK "is thinking"
@@ -46,7 +46,7 @@ typedef struct s_philo
     int id;
     int dead;
     int iter_num;
-    long int    eat_time;
+    long int    last_meal;
     long int    time;
     pthread_t life_tid;
     pthread_t death_tid;

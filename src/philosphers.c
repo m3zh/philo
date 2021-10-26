@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/25 15:09:10 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/10/26 11:29:42 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,13 @@ static int init_thread(t_params *p, t_philo *philo)
     i = -1;
     if (pthread_mutex_init(&p->lock, NULL) == -1)
         return (error_msg("Error\nMutex init failed\n"));
+    p->start = current_time();
     while(++i < p->num)
     {
         philo[i].id = i;
         philo[i].dead = 0;
         philo[i].iter_num = 0;
-        philo[i].eat_time = 0;
+        philo[i].last_meal = p->start;
         if (pthread_mutex_init(&philo[i].left_fork, NULL) == -1)
             return (error_msg("Error\nLeft fork mutex init failed\n"));
         if (pthread_mutex_init(&philo[i].right_fork, NULL) == -1)
@@ -39,8 +40,7 @@ static int init_thread(t_params *p, t_philo *philo)
         philo[i].params = p;
         if (pthread_create(&philo[i].life_tid, NULL, &thread_routine, &philo[i]) == -1)
             return (error_msg("Error\nFailed to create thread\n"));
-    }
-    // p->start = current_time();
+    }    
     return (0);
 }
 
