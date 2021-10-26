@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:16:12 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/26 12:41:10 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/10/26 18:13:40 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@ void someone_died(long int now, t_philo *p)
 	printf("[ %ld ms ] Philosopher %d %s\n", now, p->id, DIE);
 	p->params->over = 1;
 	p->dead = 1;
+}
+
+void *death_check(void *job)
+{
+	return (job);
 }
 
 void ft_think(t_philo *p)
@@ -50,14 +55,16 @@ void ft_eat(t_philo *p)
 {
 	long int now;
 
+	if (p->params->max_iter && p->iter_num == p->params->max_iter)
+		return (stop_simulation(p));
+	now = current_time();
+	if (now - p->last_meal > p->params->time2die)
+		return (someone_died(now - p->last_meal, p));
 	pthread_mutex_lock(&p->left_fork);
 	print_routine(current_time() - p->last_meal, p, FORK);
 	if (p->params->num > 1)
 		pthread_mutex_lock(&p->right_fork);
-	print_routine(current_time() - p->last_meal, p, FORK);
-	now = current_time();
-	if (now - p->last_meal > p->params->time2die)
-		return (someone_died(now - p->last_meal, p));
+	print_routine(current_time() - p->last_meal, p, FORK);	
 	while (!p->params->over && (now - p->last_meal) < p->params->time2eat)
 	{
 		if (now - p->last_meal > p->params->time2die)
@@ -83,7 +90,9 @@ void *thread_routine(void *job)
 	philo->last_meal = philo->start;
 	while (!philo->dead || !philo->params->over)
 	{
+		pthread_create(&philo->death_tid, NULL, death_check, job);
 		ft_eat(philo);
+		pthread_detach(philo->death_tid);
 		if (!philo->dead || !philo->params->over)
 			ft_sleep(philo);
 		if (!philo->dead || !philo->params->over)

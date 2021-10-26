@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 15:32:10 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/26 12:30:07 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/10/26 17:05:49 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,10 @@ int error_msg(char *s)
 void print_routine(long int now, t_philo * p, char *action)
 {
     printf("[ %ld ms ] Philosopher %d %s\n", now, p->id, action);
+}
+
+void stop_simulation(t_philo *p)
+{
+	printf("All philosophers have eaten %d and are alive\n", p->iter_num);
+	p->params->over = 1;
 }
