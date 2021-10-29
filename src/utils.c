@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 15:32:10 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/26 17:05:49 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/10/28 14:00:30 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,17 @@ int error_msg(char *s)
     return (write(STDERR_FILENO, s, ft_strlen(s)));
 }
 
-void print_routine(long int now, t_philo * p, char *action)
+int print_routine(long int now, t_philo *p, char *action)
 {
+	pthread_mutex_lock(p->params->death);
+	if (p->dead)
+	{
+		pthread_mutex_unlock(p->params->death);
+		return (1);
+	}
     printf("[ %ld ms ] Philosopher %d %s\n", now, p->id, action);
+	pthread_mutex_unlock(p->params->death);
+	return (0);
 }
 
 void stop_simulation(t_philo *p)
