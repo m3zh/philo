@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/31 10:13:24 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/10/31 13:13:05 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int init_thread(t_params *p, t_philo *philo)
     {
         philo[i].right_fork = philo[(i + 1) % p->num].left_fork;
         if (pthread_create(&philo[i].life_tid, NULL, &thread_routine, &philo[i]) == -1)
-            return (error_msg("Error\nFailed to create thread\n", philo, p->num));
+            return (error_msg("Error\nFailed to create thread\n", p, philo, 2));
     }
     return (0);
 }

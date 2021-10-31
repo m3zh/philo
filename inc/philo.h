@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:32:05 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/31 10:09:31 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/10/31 13:10:50 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ long int    current_time(void);
 int		    ft_atoi(const char *str);
 void	    ft_usleep(long int time);
 void        stop_simulation(t_philo *p);
-int         error_msg(char *s, t_philo *p, int malloc);
+int         error_msg(char *s, t_params *par, t_philo *p, int malloc);
 
 
 #endif
