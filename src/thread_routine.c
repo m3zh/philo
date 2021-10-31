@@ -6,20 +6,20 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:16:12 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/31 12:56:21 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/10/31 15:43:51 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-int unlock_mutex(t_philo *p)
+int	unlock_mutex(t_philo *p)
 {
 	pthread_mutex_unlock(p->left_fork);
 	pthread_mutex_unlock(p->right_fork);
 	return (EXIT_FAILURE);
 }
 
-int someone_died(long int now, t_philo *p)
+int	someone_died(long int now, t_philo *p)
 {
 	unlock_mutex(p);
 	print_routine(now, p, DIE);
@@ -28,7 +28,7 @@ int someone_died(long int now, t_philo *p)
 	return (1);
 }
 
-int check_death(t_philo *p)
+int	check_death(t_philo *p)
 {
 	int			died;
 	long int	now;
@@ -47,10 +47,10 @@ int check_death(t_philo *p)
 	return (died);
 }
 
-int ft_think(t_philo *p)
+int	ft_think(t_philo *p)
 {
-	long int now;
-	
+	long int	now;
+
 	now = current_time();
 	print_routine(now - p->last_meal, p, THINK);
 	if (!p->params->over && (now - p->last_meal) > p->params->time2die)
@@ -58,23 +58,23 @@ int ft_think(t_philo *p)
 	return (0);
 }
 
-int ft_sleep(t_philo *p)
+int	ft_sleep(t_philo *p)
 {
-	long int now;
-	
+	long int	now;
+
 	now = current_time();
 	while (!p->params->over && (now - p->last_meal) < p->params->time2sleep)
 	{
 		if (now - p->last_meal > p->params->time2die)
 			return (someone_died(now - p->last_meal, p));
-		now = current_time();   
-	}    
+		now = current_time();
+	}
 	p->last_sleep = now;
 	print_routine(now - p->last_meal, p, SLEEP);
 	return (0);
 }
 
-int ft_eat(t_philo *p)
+int	ft_eat(t_philo *p)
 {
 	pthread_mutex_lock(p->left_fork);
 	if (print_routine(current_time() - p->last_meal, p, FORK))
@@ -101,14 +101,14 @@ int ft_eat(t_philo *p)
 	return (0);
 }
 
-void *thread_routine(void *job)
+void	*thread_routine(void *job)
 {
 	int		starved;
-	t_philo *philo;
+	t_philo	*philo;
 
 	starved = 0;
 	philo = (t_philo *)job;
-	if (philo->id&0)
+	if (philo->id & 0)
 		ft_usleep(150);
 	philo->last_meal = current_time();
 	philo->params->last_meal = philo->last_meal;
@@ -121,7 +121,7 @@ void *thread_routine(void *job)
 		if (!starved && !philo->dead && !philo->params->over)
 			starved = ft_think(philo);
 		if (starved)
-			check_death(philo);    
-	}   
-	return (NULL);    
+			check_death(philo);
+	}
+	return (NULL);
 }

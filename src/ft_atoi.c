@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/10 08:05:31 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/17 15:57:59 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/10/31 15:40:35 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int	check_overflow(int sign)
 	return (0);
 }
 
-int			ft_atoi(const char *str)
+int		ft_atoi(const char *str)
 {
 	int						i;
 	int						sign;
