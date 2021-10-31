@@ -6,35 +6,58 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/29 08:10:12 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/10/31 10:13:24 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-static int init_thread(t_params *p, t_philo *philo)
+static void check_thread(t_params *p, t_philo *philo)
 {
     int i;
-    //static pthread_mutex_t *fork;
-    
+
+    while (!p->over)
+    {
+        i = -1;
+        while (++i < p->num)
+            if (check_death(&philo[i]))
+                p->over = 1;
+    }
+}
+
+static int init_philo(t_params *p, t_philo *philo)
+{
+    int i;
+
     i = -1;
-    p->start = current_time();
     while(++i < p->num)
     {
-        philo[i].left_fork = malloc(sizeof(pthread_mutex_t));
         philo[i].id = i;
         philo[i].dead = 0;
         philo[i].iter_num = 0;
         philo[i].last_meal = 0;
         philo[i].last_sleep = 0;
         philo[i].params = p;
-        pthread_mutex_init(philo[i].left_fork, NULL);
+        philo[i].left_fork = &p->fork[i];
+        // if (pthread_mutex_init(philo[i].left_fork, NULL) == -1)
+        //     return (error_msg("Error\nLeft fork init failed\n", philo, i));
         philo[i].right_fork = 0;
-        if (p->num > 1 && i == p->num - 1)
-            philo[i].right_fork = philo[(i + 1) % p->num].left_fork;   
+    }
+    return (0);
+}
+
+static int init_thread(t_params *p, t_philo *philo)
+{
+    int i;
+    
+    i = -1;
+    p->start = current_time();
+    while(++i < p->num)
+    {
+        philo[i].right_fork = philo[(i + 1) % p->num].left_fork;
         if (pthread_create(&philo[i].life_tid, NULL, &thread_routine, &philo[i]) == -1)
-            return (error_msg("Error\nFailed to create thread\n"));
-    }    
+            return (error_msg("Error\nFailed to create thread\n", philo, p->num));
+    }
     return (0);
 }
 
@@ -57,10 +80,11 @@ int philosophers(t_params *params)
     t_philo *philo;
 
     philo = malloc(sizeof(t_philo) * params->num);
-    if (!philo)
-        return (0);
+    if (!philo || init_philo(params, philo))
+        return (EXIT_FAILURE);
     if (init_thread(params, philo))
         return (EXIT_FAILURE);
+    check_thread(params, philo); 
     end_thread(params, philo);
     return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 15:34:47 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/18 15:41:41 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/10/30 13:08:26 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ long int		current_time(void)
 	struct timeval		now;
 
 	if (gettimeofday(&now, NULL) == -1)
-		error_msg("Gettimeofday failed to get time\n");
+		error_msg("Gettimeofday failed to get time\n",0, 0);
 	return ((now.tv_sec * 1000) + (now.tv_usec / 1000));
 }
 

@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 15:32:10 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/28 14:00:30 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/10/30 13:20:03 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,27 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-int error_msg(char *s)
+int error_msg(char *s, t_philo *p, int malloc)
 {
+	int	i;
+
+	i = -1;
+	if (malloc)
+	{
+		while (++i < malloc)
+			free(p[i].left_fork);
+		free(p);
+	}		
     return (write(STDERR_FILENO, s, ft_strlen(s)));
 }
 
 int print_routine(long int now, t_philo *p, char *action)
 {
+	printf("dead0\n");
 	pthread_mutex_lock(p->params->death);
 	if (p->dead)
 	{
+		printf("dead1\n");
 		pthread_mutex_unlock(p->params->death);
 		return (1);
 	}
