@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:16:12 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/01 19:01:02 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/01 19:09:09 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ int	unlock_mutex(t_philo *p)
 
 int	someone_died(long int now, t_philo *p)
 {
-	unlock_mutex(p);
 	print_routine(now, p, DIE);
 	p->params->over = 1;
 	p->dead = 1;
+	unlock_mutex(p);
 	return (1);
 }
 
@@ -37,8 +37,7 @@ int	check_death(t_philo *p)
 	if (p->dead || now > p->params->time2die)
 	{
 		pthread_mutex_unlock(p->params->death);
-		someone_died(now, p);
-		return (1);
+		return (someone_died(now, p));
 	}
 	pthread_mutex_unlock(p->params->death);
 	return (0);
