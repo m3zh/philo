@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/31 15:39:28 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/01 18:55:09 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ static int	init_philo(t_params *p, t_philo *philo)
 		philo[i].last_sleep = 0;
 		philo[i].params = p;
 		philo[i].left_fork = &p->fork[i];
-		// if (pthread_mutex_init(philo[i].left_fork, NULL) == -1)
-		//     return (error_msg("Error\nLeft fork init failed\n", philo, i));
 		philo[i].right_fork = 0;
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:16:12 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/31 15:43:51 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/01 19:01:02 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,18 @@ int	someone_died(long int now, t_philo *p)
 
 int	check_death(t_philo *p)
 {
-	int			died;
 	long int	now;
 
-	died = 0;
+	now = current_time() - p->last_meal;
 	pthread_mutex_lock(p->params->death);
-	if (p->dead)
+	if (p->dead || now > p->params->time2die)
 	{
 		pthread_mutex_unlock(p->params->death);
+		someone_died(now, p);
 		return (1);
 	}
-	now = current_time() - p->last_meal;
-	if (now > p->params->time2die)
-		died = someone_died(now, p);
 	pthread_mutex_unlock(p->params->death);
-	return (died);
+	return (0);
 }
 
 int	ft_think(t_philo *p)
