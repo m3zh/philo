@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/01 18:55:09 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/01 19:48:32 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	init_philo(t_params *p, t_philo *philo)
 		philo[i].dead = 0;
 		philo[i].iter_num = 0;
 		philo[i].last_meal = 0;
-		philo[i].last_sleep = 0;
+		philo[i].thread_start = 0;
 		philo[i].params = p;
 		philo[i].left_fork = &p->fork[i];
 		philo[i].right_fork = 0;
@@ -49,9 +49,9 @@ static int	init_thread(t_params *p, t_philo *philo)
 	int	i;
 
 	i = -1;
-	p->start = current_time();
 	while (++i < p->num)
 	{
+		philo[i].thread_start = current_time();
 		philo[i].right_fork = philo[(i + 1) % p->num].left_fork;
 		if (pthread_create(&philo[i].life_tid, NULL,
 				&thread_routine, &philo[i]) == -1)

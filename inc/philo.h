@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:32:05 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/31 15:51:39 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/01 19:49:23 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ typedef struct s_params
 	int				max_iter;
 	int				iter_num;
 	int				over;
-	long int		start;
 	long int		last_meal;
 	pthread_mutex_t	*death;
 	pthread_mutex_t	*fork;
@@ -50,9 +49,8 @@ typedef struct s_philo
 	int				id;
 	int				dead;
 	int				iter_num;
-	long int		start;
+	long int		thread_start;
 	long int		last_meal;
-	long int		last_sleep;
 	pthread_t		life_tid;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
@@ -67,6 +65,6 @@ long int	current_time(void);
 int			ft_atoi(const char *str);
 void		ft_usleep(long int		time);
 void		stop_simulation(t_philo *p);
-int			error_msg(char *s, t_params *par, t_philo *p, int		malloc);
+int			error_msg(char *s, t_params *par, t_philo *p, int malloc);
 
 #endif

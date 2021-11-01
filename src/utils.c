@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 15:32:10 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/31 15:40:13 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/01 19:41:06 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,10 @@ int	error_msg(char *s, t_params *par, t_philo *p, int malloc)
 	i = -1;
 	if (malloc)
 	{
-		free(par->death);
-		free(par->fork);
+		if (par->death)
+			free(par->death);
+		if (par->fork)
+			free(par->fork);
 		if (malloc == 2)
 			while (++i < par->num)
 				free(&p[i]);
@@ -40,18 +42,14 @@ int	error_msg(char *s, t_params *par, t_philo *p, int malloc)
 
 int	print_routine(long int now, t_philo *p, char *action)
 {
-	// printf("routine\n");
 	pthread_mutex_lock(p->params->death);
-	// perror("Death lock");
 	if (p->dead)
 	{
 		pthread_mutex_unlock(p->params->death);
-		// perror("Death");
 		return (1);
 	}
 	printf("[ %ld ms ] Philosopher %d %s\n", now, p->id, action);
 	pthread_mutex_unlock(p->params->death);
-	// perror("Death unlock");
 	return (0);
 }
 

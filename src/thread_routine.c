@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:16:12 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/01 19:09:09 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/01 19:48:25 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,7 @@ int	check_death(t_philo *p)
 	return (0);
 }
 
-int	ft_think(t_philo *p)
-{
-	long int	now;
-
-	now = current_time();
-	print_routine(now - p->last_meal, p, THINK);
-	if (!p->params->over && (now - p->last_meal) > p->params->time2die)
-		return (someone_died(now - p->last_meal, p));
-	return (0);
-}
-
-int	ft_sleep(t_philo *p)
+int	ft_sleep_and_think(t_philo *p)
 {
 	long int	now;
 
@@ -65,26 +54,29 @@ int	ft_sleep(t_philo *p)
 			return (someone_died(now - p->last_meal, p));
 		now = current_time();
 	}
-	p->last_sleep = now;
-	print_routine(now - p->last_meal, p, SLEEP);
+	print_routine(now - p->thread_start, p, SLEEP);
+	now = current_time();
+	print_routine(now - p->thread_start, p, THINK);
+	if (!p->params->over && (now - p->last_meal) > p->params->time2die)
+		return (someone_died(now - p->last_meal, p));
 	return (0);
 }
 
 int	ft_eat(t_philo *p)
 {
 	pthread_mutex_lock(p->left_fork);
-	if (print_routine(current_time() - p->last_meal, p, FORK))
+	if (print_routine(current_time() - p->thread_start, p, FORK))
 	{
 		pthread_mutex_unlock(p->left_fork);
 		return (1);
 	}
 	pthread_mutex_lock(p->right_fork);
-	if (print_routine(current_time() - p->last_meal, p, FORK))
+	if (print_routine(current_time() - p->thread_start, p, FORK))
 	{
 		unlock_mutex(p);
 		return (1);
 	}
-	if (print_routine(current_time() - p->last_meal, p, EAT))
+	if (print_routine(current_time() - p->thread_start, p, EAT))
 	{
 		unlock_mutex(p);
 		return (1);
@@ -113,9 +105,7 @@ void	*thread_routine(void *job)
 		if (!starved)
 			starved = ft_eat(philo);
 		if (!starved && !philo->dead && !philo->params->over)
-			starved = ft_sleep(philo);
-		if (!starved && !philo->dead && !philo->params->over)
-			starved = ft_think(philo);
+			starved = ft_sleep_and_think(philo);
 		if (starved)
 			check_death(philo);
 	}
