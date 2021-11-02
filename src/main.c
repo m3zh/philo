@@ -6,37 +6,17 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/01 19:40:07 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/10/31 15:36:07 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-static int	init_params_mutex(t_params *p)
+static int	init_params(t_params *p, char **ag)
 {
 	int	i;
 
 	i = -1;
-	p->death = 0;
-	p->fork = 0;
-	p->death = malloc(sizeof(pthread_mutex_t));
-	if (!p->death)
-		return (error_msg("Error\nMutex death: malloc failed\n", p, 0, 1));
-	p->fork = malloc(sizeof(pthread_mutex_t) * p->num);
-	if (!p->fork)
-		return (error_msg("Error\nMutex fork: malloc failed\n", p, 0, 1));
-	if (pthread_mutex_init(p->death, NULL) == -1)
-		return (error_msg("Error\nMutex init failed\n", p, 0, 1));
-	while (++i < p->num)
-		if (pthread_mutex_init(&p->fork[i], NULL) == -1)
-			return (error_msg("Error\nMutex init failed\n", p, 0, 1));
-	return (0);
-}
-
-static int	init_params(t_params *p, char **ag)
-{
-	int	mutex;
-
 	p->num = ft_atoi(ag[1]);
 	p->forks = p->num;
 	p->time2die = ft_atoi(ag[2]);
@@ -48,8 +28,18 @@ static int	init_params(t_params *p, char **ag)
 	p->iter_num = 0;
 	p->over = 0;
 	p->last_meal = 0;
-	mutex = init_params_mutex(p);
-	return (mutex || p->num < 0 || p->time2die < 0 || p->time2eat < 0
+	p->death = malloc(sizeof(pthread_mutex_t));
+	if (!p->death)
+		return (error_msg("Error\nMutex death: malloc failed\n", p, 0, 1));
+	p->fork = malloc(sizeof(pthread_mutex_t) * p->num);
+	if (!p->fork)
+		return (error_msg("Error\nMutex fork: malloc failed\n", p, 0, 1));
+	if (pthread_mutex_init(p->death, NULL) == -1)
+		return (error_msg("Error\nMutex init failed\n", p, 0, 1));
+	while (++i < p->num)
+		if (pthread_mutex_init(&p->fork[i], NULL) == -1)
+			return (error_msg("Error\nMutex init failed\n", p, 0, 1));
+	return (p->num < 0 || p->time2die < 0 || p->time2eat < 0
 		|| p->time2sleep < 0 || p->max_iter < 0);
 }
 
