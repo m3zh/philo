@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/02 17:13:12 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/02 17:23:11 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	check_thread(t_params *p, t_philo *philo)
 {
 	int	i;
 
-	ft_usleep(10);
+	ft_usleep(3 * p->num);
 	while (!p->over)
 	{
 		i = -1;
