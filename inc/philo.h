@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:32:05 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/02 09:44:12 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/02 10:13:12 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ typedef struct s_params
 	int				max_iter;
 	int				iter_num;
 	int				over;
-	long int		start;
-	long int		last_meal;
 	pthread_mutex_t	*death;
 	pthread_mutex_t	*fork;
 }	t_params;
@@ -50,9 +48,8 @@ typedef struct s_philo
 	int				id;
 	int				dead;
 	int				iter_num;
-	long int		start;
+	long int		thread_start;
 	long int		last_meal;
-	long int		last_sleep;
 	pthread_t		life_tid;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;

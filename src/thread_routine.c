@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:16:12 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/02 09:51:13 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/02 12:15:00 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	check_death(t_philo *p)
 	pthread_mutex_lock(p->params->death);
 	if (p->dead || now > p->params->time2die)
 	{
+		now = time_now(p) - p->thread_start;
 		pthread_mutex_unlock(p->params->death);
 		return (someone_died(now, p));
 	}
@@ -48,36 +49,35 @@ int	ft_sleep_and_think(t_philo *p)
 			return (someone_died(now - p->last_meal, p));
 		now = time_now(p);
 	}
-	print_routine(now - p->last_meal, p, SLEEP);
-	print_routine(now - p->last_meal, p, THINK);
+	print_routine(now - p->thread_start, p, SLEEP);
+	print_routine(now - p->thread_start, p, THINK);
 	if (!p->params->over && (now - p->last_meal) > p->params->time2die)
-		return (someone_died(now - p->last_meal, p));
+		return (someone_died(now - p->thread_start, p));
 	return (0);
 }
 
 int	ft_eat(t_philo *p)
 {
 	pthread_mutex_lock(p->left_fork);
-	if (print_routine(time_now(p) - p->last_meal, p, FORK))
+	if (print_routine(time_now(p) - p->thread_start, p, FORK))
 	{
 		pthread_mutex_unlock(p->left_fork);
 		return (1);
 	}
 	pthread_mutex_lock(p->right_fork);
-	if (print_routine(time_now(p) - p->last_meal, p, FORK))
+	if (print_routine(time_now(p) - p->thread_start, p, FORK))
 	{
 		pthread_mutex_unlock(p->left_fork);
 		pthread_mutex_unlock(p->right_fork);
 		return (1);
 	}
-	if (print_routine(time_now(p) - p->last_meal, p, EAT))
+	if (print_routine(time_now(p) - p->thread_start, p, EAT))
 	{
 		pthread_mutex_unlock(p->left_fork);
 		pthread_mutex_unlock(p->right_fork);
 		return (1);
 	}
 	p->last_meal = time_now(p);
-	p->params->last_meal = p->last_meal;
 	p->iter_num++;
 	pthread_mutex_unlock(p->left_fork);
 	pthread_mutex_unlock(p->right_fork);
@@ -91,10 +91,10 @@ void	*thread_routine(void *job)
 
 	starved = 0;
 	philo = (t_philo *)job;
-	if (philo->id & 0)
-		ft_usleep(150);
-	philo->last_meal = time_now(philo);
-	philo->params->last_meal = philo->last_meal;
+	if (philo->id & 1)
+		usleep(150);
+	philo->thread_start = time_now(philo);
+	philo->last_meal = philo->thread_start;
 	while (!philo->dead && !philo->params->over)
 	{
 		if (!starved)

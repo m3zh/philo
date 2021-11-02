@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/02 09:48:34 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/02 10:13:30 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int	init_philo(t_params *p, t_philo *philo)
 		philo[i].id = i;
 		philo[i].dead = 0;
 		philo[i].iter_num = 0;
+		philo[i].thread_start = 0;
 		philo[i].last_meal = 0;
-		philo[i].last_sleep = 0;
 		philo[i].params = p;
 		philo[i].left_fork = &p->fork[i];
 		philo[i].right_fork = 0;
@@ -64,7 +64,6 @@ static int	init_params(t_params *p, char **ag)
 		p->max_iter = ft_atoi(ag[5]);
 	p->iter_num = 0;
 	p->over = 0;
-	p->last_meal = 0;
 	mutex = init_params_mutex(p);
 	return (mutex || p->num < 0 || p->time2die < 0 || p->time2eat < 0
 		|| p->time2sleep < 0 || p->max_iter < 0);
