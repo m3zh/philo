@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/01 18:55:09 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/02 09:41:38 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	init_thread(t_params *p, t_philo *philo)
 	int	i;
 
 	i = -1;
-	p->start = current_time();
+	p->start = time_now();
 	while (++i < p->num)
 	{
 		philo[i].right_fork = philo[(i + 1) % p->num].left_fork;

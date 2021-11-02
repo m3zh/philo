@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:32:05 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/31 15:51:39 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/02 09:41:38 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int			philosophers(t_params *p);
 void		*thread_routine(void *job);
 int			print_routine(long int		now, t_philo *p, char *action);
 int			check_death(t_philo *p);
-long int	current_time(void);
+long int	time_now(void);
 int			ft_atoi(const char *str);
 void		ft_usleep(long int		time);
 void		stop_simulation(t_philo *p);

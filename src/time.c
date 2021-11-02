@@ -6,13 +6,13 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 15:34:47 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/31 15:35:41 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/02 09:41:38 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-long int	current_time(void)
+long int	time_now(void)
 {
 	struct timeval	now;
 
@@ -25,7 +25,7 @@ void	ft_usleep(long int time)
 {
 	long int	start_time;
 
-	start_time = current_time();
-	while ((current_time() - start_time) < time)
+	start_time = time_now();
+	while ((time_now() - start_time) < time)
 		usleep(time / 10);
 }
