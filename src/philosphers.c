@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/02 09:41:38 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/02 09:46:34 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,31 +25,12 @@ static void	check_thread(t_params *p, t_philo *philo)
 	}
 }
 
-static int	init_philo(t_params *p, t_philo *philo)
-{
-	int	i;
-
-	i = -1;
-	while (++i < p->num)
-	{
-		philo[i].id = i;
-		philo[i].dead = 0;
-		philo[i].iter_num = 0;
-		philo[i].last_meal = 0;
-		philo[i].last_sleep = 0;
-		philo[i].params = p;
-		philo[i].left_fork = &p->fork[i];
-		philo[i].right_fork = 0;
-	}
-	return (0);
-}
-
 static int	init_thread(t_params *p, t_philo *philo)
 {
 	int	i;
 
 	i = -1;
-	p->start = time_now();
+	p->start = time_now(philo);
 	while (++i < p->num)
 	{
 		philo[i].right_fork = philo[(i + 1) % p->num].left_fork;

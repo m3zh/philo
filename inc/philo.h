@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:32:05 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/02 09:41:38 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/02 09:44:12 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,14 @@ typedef struct s_philo
 }	t_philo;
 
 int			philosophers(t_params *p);
-void		*thread_routine(void *job);
-int			print_routine(long int		now, t_philo *p, char *action);
+int			init_philo(t_params *p, t_philo *philo);
+int			print_routine(long int	now, t_philo *p, char *action);
 int			check_death(t_philo *p);
-long int	time_now(void);
 int			ft_atoi(const char *str);
-void		ft_usleep(long int		time);
+void		*thread_routine(void *job);
+void		ft_usleep(long int	time);
 void		stop_simulation(t_philo *p);
-int			error_msg(char *s, t_params *par, t_philo *p, int		malloc);
+int			error_msg(char *s, t_params *par, t_philo *p, int malloc);
+long int	time_now(t_philo *p);
 
 #endif

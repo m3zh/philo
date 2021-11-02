@@ -6,11 +6,30 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/10/31 15:36:07 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/02 09:43:09 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
+
+int	init_philo(t_params *p, t_philo *philo)
+{
+	int	i;
+
+	i = -1;
+	while (++i < p->num)
+	{
+		philo[i].id = i;
+		philo[i].dead = 0;
+		philo[i].iter_num = 0;
+		philo[i].last_meal = 0;
+		philo[i].last_sleep = 0;
+		philo[i].params = p;
+		philo[i].left_fork = &p->fork[i];
+		philo[i].right_fork = 0;
+	}
+	return (0);
+}
 
 static int	init_params(t_params *p, char **ag)
 {
