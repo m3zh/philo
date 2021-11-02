@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:32:05 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/02 13:57:02 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/02 17:03:38 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_params
 	int				max_iter;
 	int				check_meal;
 	int				over;
+	long int		start;
 	pthread_mutex_t	*death;
 	pthread_mutex_t	*fork;
 }	t_params;

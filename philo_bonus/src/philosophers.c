@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosphers.c                                      :+:      :+:    :+:   */
+/*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/02 13:57:38 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/02 16:37:20 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static int	check_meals(t_philo *p, int last)
 {
 	if (p->params->check_meal && last == p->params->num - 1)
 	{
+		ft_usleep(150);
 		if (p->iter_num == p->params->max_iter)
 			return (printf("All philosophers have eaten %d times\n", p->iter_num));
 	}

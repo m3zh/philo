@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:16:12 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/02 14:03:25 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/02 17:16:03 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,12 @@ int	ft_sleep_and_think(t_philo *p)
 
 	now = time_now(p);
 	while (!p->params->over && (now - p->last_meal) < p->params->time2sleep)
-	{
-		if (now - p->last_meal > p->params->time2die)
-			return (someone_died(now - p->last_meal, p));
 		now = time_now(p);
-	}
 	print_routine(now - p->thread_start, p, SLEEP);
 	print_routine(now - p->thread_start, p, THINK);
-	if (!p->params->over && (now - p->last_meal) > p->params->time2die)
+	if (p->params->over)
+		return (1);
+	if (now - p->last_meal > p->params->time2die)
 		return (someone_died(now - p->thread_start, p));
 	return (0);
 }
@@ -93,14 +91,14 @@ void	*thread_routine(void *job)
 	philo = (t_philo *)job;
 	if (philo->id & 1)
 		usleep(150);
-	philo->thread_start = time_now(philo);
-	philo->last_meal = philo->thread_start;
-	while (!philo->dead && !philo->params->over)
+	philo->thread_start = philo->params->start;
+	philo->last_meal = time_now(philo);
+	while (!starved && !philo->dead && !philo->params->over)
 	{
 		if (!starved)
 			starved = ft_eat(philo);
 		if (!starved && !philo->dead && !philo->params->over)
-			ft_sleep_and_think(philo);
+			starved = ft_sleep_and_think(philo);
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/02 13:57:52 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/02 17:04:10 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ static int	init_params(t_params *p, char **ag)
 	p->time2sleep = ft_atoi(ag[4]);
 	p->max_iter = 0;
 	p->check_meal = 0;
+	p->start = 0;
 	if (ag[5])
 	{
 		p->check_meal = 1;
