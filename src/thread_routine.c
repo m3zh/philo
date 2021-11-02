@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:16:12 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/02 12:15:00 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/02 14:03:25 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,6 @@ void	*thread_routine(void *job)
 			starved = ft_eat(philo);
 		if (!starved && !philo->dead && !philo->params->over)
 			ft_sleep_and_think(philo);
-		if (starved)
-			check_death(philo);
 	}
 	return (NULL);
 }

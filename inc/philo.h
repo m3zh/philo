@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:32:05 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/02 10:13:12 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/02 13:57:02 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef struct s_params
 	int				time2eat;
 	int				time2sleep;
 	int				max_iter;
-	int				iter_num;
+	int				check_meal;
 	int				over;
 	pthread_mutex_t	*death;
 	pthread_mutex_t	*fork;

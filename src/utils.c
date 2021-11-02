@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 15:32:10 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/02 09:48:57 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/02 14:05:04 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,4 @@ int	print_routine(long int now, t_philo *p, char *action)
 	printf("[ %ld ms ] Philosopher %d %s\n", now, p->id, action);
 	pthread_mutex_unlock(p->params->death);
 	return (0);
-}
-
-void	stop_simulation(t_philo *p)
-{
-	printf("All philosophers have eaten %d and are alive\n", p->iter_num);
-	p->params->over = 1;
 }
