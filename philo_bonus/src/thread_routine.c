@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:16:12 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/04 15:50:31 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/04 17:10:54 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int	someone_died(long int now, t_philo *p)
 	print_routine(now, p, DIE);
 	p->params->over = 1;
 	p->dead = 1;
-	sem_wait(p->left_fork);
-	sem_wait(p->right_fork);
+	sem_wait(p->params->fork);
+	sem_wait(p->params->fork);
 	return (1);
 }
 
@@ -27,15 +27,15 @@ int	check_death(t_philo *p)
 	long int	now;
 
 	now = time_now(p) - p->last_meal;
-	sem_post(p->params->death);
+	sem_wait(p->params->death);
 	if (now > p->params->time2die)
 	{
 		p->dead = 1;
 		now = time_now(p) - p->thread_start;
-		sem_wait(p->params->death);
+		sem_post(p->params->death);
 		return (someone_died(now, p));
 	}
-	sem_wait(p->params->death);
+	sem_post(p->params->death);
 	return (0);
 }
 
@@ -57,30 +57,30 @@ int	ft_sleep_and_think(t_philo *p)
 
 int	ft_eat(t_philo *p)
 {
-	sem_post(p->left_fork);
+	sem_wait(p->params->fork);
 	if (print_routine(time_now(p) - p->thread_start, p, FORK))
 	{
-		sem_wait(p->left_fork);
+		sem_post(p->params->fork);
 		return (1);
 	}
-	sem_post(p->right_fork);
+	sem_wait(p->params->fork);
 	if (print_routine(time_now(p) - p->thread_start, p, FORK))
 	{
-		sem_wait(p->left_fork);
-		sem_wait(p->right_fork);
+		sem_post(p->params->fork);
+		sem_post(p->params->fork);
 		return (1);
 	}
 	ft_usleep(p->params->time2eat);
 	if (print_routine(time_now(p) - p->thread_start, p, EAT))
 	{
-		sem_wait(p->left_fork);
-		sem_wait(p->right_fork);
+		sem_post(p->params->fork);
+		sem_post(p->params->fork);
 		return (1);
 	}
 	p->last_meal = time_now(p);
 	p->iter_num++;
-	sem_wait(p->left_fork);
-	sem_wait(p->right_fork);
+	sem_post(p->params->fork);
+	sem_post(p->params->fork);
 	return (0);
 }
 

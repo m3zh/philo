@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/04 15:43:41 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/04 17:08:49 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ int	init_philo(t_params *p, t_philo *philo)
 		philo[i].thread_start = 0;
 		philo[i].last_meal = 0;
 		philo[i].params = p;
-		philo[i].left_fork = &p->fork[i];
-		philo[i].right_fork = 0;
 	}
 	return (0);
 }
@@ -35,10 +33,12 @@ static int	init_params_semaphore(t_params *p)
 {
 	p->death = 0;
 	p->fork = 0;
-	p->death = sem_open("death", O_CREAT, 0660, 1);
+	sem_unlink("/death");
+	sem_unlink("/fork");
+	p->death = sem_open("/death", O_CREAT, 0660, 1);
 	if (p->death == SEM_FAILED)
 		return (error_msg("Error\nDeath semaphore init failed\n", p, 0, 1));
-	p->fork = sem_open("forks", O_CREAT, 0660, p->num);
+	p->fork = sem_open("/fork", O_CREAT, 0660, p->num);
 	if (p->fork == SEM_FAILED)
 		return (error_msg("Error\nFork semaphore init failed\n", p, 0, 1));
 	return (0);

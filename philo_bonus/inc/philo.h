@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:32:05 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/04 12:00:39 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/04 16:41:33 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ typedef struct s_philo
 	long int		thread_start;
 	long int		last_meal;
 	pthread_t		life_tid;
-	sem_t	*left_fork;
-	sem_t	*right_fork;
 	t_params		*params;
 }	t_philo;
 
