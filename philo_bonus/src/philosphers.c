@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/04 19:30:12 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/04 20:24:43 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,30 +19,38 @@ static int	check_meals(t_philo *p, int last)
 		&& p->iter_num == p->params->max_iter);
 }
 
-static void	check_thread(t_params *p, t_philo *philo)
+static void	*check_thread(void *job)
 {
-	int	i;
+	int		i;
+	int		num;
+	t_philo *philo;
 
+	philo = (t_philo *)job;
+	num = philo[0].params->num;
 	ft_usleep(5);
-	while (!p->over)
+	while (!philo[0].params->over)
 	{
 		i = -1;
-		while (++i < p->num)
+		while (++i < num)
 			if (check_death(&philo[i]) || check_meals(&philo[i], i))
-				p->over = 1;
+				philo[0].params->over = 1;
+		printf("loop\n");
 	}
-	if (p->check_meal && philo[p->num - 1].iter_num == p->max_iter)
+	if (philo[0].params->check_meal && philo[num - 1].iter_num == philo[0].params->max_iter)
 	{
-		ft_usleep(5 * p->num);
+		ft_usleep(5 * num);
 		printf("						\n");
-		printf("  All philosophers have eaten %d times\n", p->max_iter);
-		return (final_print(1));
+		printf("  All philosophers have eaten %d times\n", philo[0].params->max_iter);
+		final_print(1);
+		return (NULL);
 	}
-	return (final_print(0));
+	final_print(0);
+	return (NULL);
 }
 
 static int	init_thread(t_params *p, t_philo *philo)
 {
+	pthread_t death_tid;
 	int	i;
 
 	i = -1;
@@ -54,6 +62,8 @@ static int	init_thread(t_params *p, t_philo *philo)
 				&thread_routine, &philo[i]) == -1)
 			return (error_msg("Error\nFailed to create thread\n", p, philo, 2));
 	}
+	if (pthread_create(&death_tid, NULL, &check_thread, philo) == -1)
+		return (error_msg("Error\nFailed to create death thread\n", p, philo, 2));
 	sem_post(p->death);
 	return (0);
 }
@@ -81,7 +91,6 @@ int	philosophers(t_params *params)
 		return (EXIT_FAILURE);
 	if (init_thread(params, philo))
 		return (EXIT_FAILURE);
-	check_thread(params, philo);
 	end_thread(params, philo);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:16:12 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/04 19:31:08 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/04 20:24:10 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	check_death(t_philo *p)
 	long int	now;
 
 	now = time_now(p) - p->last_meal;
+	printf("%lu now\n", now);
 	sem_wait(p->params->death);
 	if (now > p->params->time2die)
 	{

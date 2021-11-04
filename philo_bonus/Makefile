@@ -6,7 +6,7 @@
 #    By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/15 12:21:19 by mdesalle          #+#    #+#              #
-#    Updated: 2021/11/04 19:28:32 by mlazzare         ###   ########.fr        #
+#    Updated: 2021/11/04 20:19:16 by mlazzare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = philo
 
 CC = gcc -g3
 CFLAGS = -Wall -Wextra -Werror
-CFLAGS += -fsanitize=thread
+CFLAGS += -fsanitize=address
 
 LIB = -lpthread
 
