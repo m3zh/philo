@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/02 13:57:52 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/04 11:59:55 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,28 +31,26 @@ int	init_philo(t_params *p, t_philo *philo)
 	return (0);
 }
 
-static int	init_params_mutex(t_params *p)
+static int	init_params_semaphore(t_params *p)
 {
-	int	i;
-
-	i = -1;
-	p->death = malloc(sizeof(pthread_mutex_t));
+	p->death = malloc(sizeof(sem_t));
 	if (!p->death)
 		return (error_msg("Error\nMutex death: malloc failed\n", p, 0, 1));
-	p->fork = malloc(sizeof(pthread_mutex_t) * p->num);
+	p->fork = malloc(sizeof(sem_t) * p->num);
 	if (!p->fork)
 		return (error_msg("Error\nMutex fork: malloc failed\n", p, 0, 1));
-	if (pthread_mutex_init(p->death, NULL) == -1)
-		return (error_msg("Error\nMutex init failed\n", p, 0, 1));
-	while (++i < p->num)
-		if (pthread_mutex_init(&p->fork[i], NULL) == -1)
-			return (error_msg("Error\nMutex init failed\n", p, 0, 1));
+	p->death = sem_open("death", O_CREAT, 0660, 1);
+	if (p->death)
+		return (error_msg("Error\nDeath semaphore init failed\n", p, 0, 1));
+	p->fork = sem_open("forks", O_CREAT, 0660, p->num);
+	if (p->fork)
+		return (error_msg("Error\nFork semaphore init failed\n", p, 0, 1));
 	return (0);
 }
 
 static int	init_params(t_params *p, char **ag)
 {
-	int	mutex;
+	int	sem;
 
 	p->num = ft_atoi(ag[1]);
 	p->forks = p->num;
@@ -61,14 +59,15 @@ static int	init_params(t_params *p, char **ag)
 	p->time2sleep = ft_atoi(ag[4]);
 	p->max_iter = 0;
 	p->check_meal = 0;
+	p->start = 0;
 	if (ag[5])
 	{
 		p->check_meal = 1;
 		p->max_iter = ft_atoi(ag[5]);
 	}
 	p->over = 0;
-	mutex = init_params_mutex(p);
-	return (mutex || p->num < 0 || p->time2die < 0 || p->time2eat < 0
+	sem = init_params_semaphore(p);
+	return (sem || p->num < 0 || p->time2die < 0 || p->time2eat < 0
 		|| p->time2sleep < 0 || p->max_iter < 0);
 }
 

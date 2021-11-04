@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:16:12 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/03 10:18:58 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/04 13:30:39 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	check_death(t_philo *p)
 
 	now = time_now(p) - p->last_meal;
 	pthread_mutex_lock(p->params->death);
-	if (p->dead || now > p->params->time2die)
+	if (now > p->params->time2die)
 	{
 		now = time_now(p) - p->thread_start;
 		pthread_mutex_unlock(p->params->death);
@@ -69,6 +69,7 @@ int	ft_eat(t_philo *p)
 		pthread_mutex_unlock(p->right_fork);
 		return (1);
 	}
+	ft_usleep(p->params->time2eat);
 	if (print_routine(time_now(p) - p->thread_start, p, EAT))
 	{
 		pthread_mutex_unlock(p->left_fork);
@@ -89,8 +90,8 @@ void	*thread_routine(void *job)
 
 	starved = 0;
 	philo = (t_philo *)job;
-	if (philo->id & 1)
-		usleep(150);
+	// if (philo->id & 1)
+	// 	usleep(0.5);
 	philo->thread_start = philo->params->start;
 	philo->last_meal = time_now(philo);
 	while (!starved && !philo->dead && !philo->params->over)
