@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/04 17:06:00 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/04 19:30:12 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,14 @@ static int	init_thread(t_params *p, t_philo *philo)
 
 	i = -1;
 	p->start = time_now(philo);
+	sem_post(p->death);
 	while (++i < p->num)
 	{
 		if (pthread_create(&philo[i].life_tid, NULL,
 				&thread_routine, &philo[i]) == -1)
 			return (error_msg("Error\nFailed to create thread\n", p, philo, 2));
 	}
+	sem_post(p->death);
 	return (0);
 }
 
