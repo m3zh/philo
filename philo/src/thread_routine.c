@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:16:12 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/02 17:16:03 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/03 10:18:58 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ int	ft_sleep_and_think(t_philo *p)
 {
 	long int	now;
 
+	if (!p->params->over)
+		ft_usleep(p->params->time2sleep);
 	now = time_now(p);
-	while (!p->params->over && (now - p->last_meal) < p->params->time2sleep)
-		now = time_now(p);
 	print_routine(now - p->thread_start, p, SLEEP);
 	print_routine(now - p->thread_start, p, THINK);
 	if (p->params->over)
