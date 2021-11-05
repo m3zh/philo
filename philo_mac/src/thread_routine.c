@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:16:12 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/05 12:37:50 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/05 17:37:37 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,12 @@ int	ft_eat(t_philo *p)
 		return (someone_died(time_now(p), p, 1, 1));
 	p->last_meal = time_now(p);
 	if (p->params->over)
-		return (someone_died(0, p, 1, 0));
-	ft_usleep(p->params->time2eat);
-	if (p->params->over)
 		return (1);
 	if (print_routine(time_now(p) - p->thread_start, p, EAT))
 		return (someone_died(0, p, 1, 0));
+	if (p->params->over)
+		return (someone_died(0, p, 1, 0));
+	ft_usleep(p->params->time2eat);
 	p->iter_num++;
 	pthread_mutex_unlock(p->left_fork);
 	pthread_mutex_unlock(p->right_fork);
@@ -92,7 +92,7 @@ void	*thread_routine(void *job)
 
 	philo = (t_philo *)job;
 	if (philo->id & 1)
-		ft_usleep(50);
+		ft_usleep(20);
 	philo->thread_start = philo->params->start;
 	philo->last_meal = time_now(philo);
 	while (!philo->dead && !philo->params->over)

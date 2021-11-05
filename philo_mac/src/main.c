@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/05 13:00:45 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/05 17:34:35 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static int	init_params(t_params *p, char **ag)
 {
 	int	mutex;
 
+	mutex = 0;
 	p->num = ft_atoi(ag[1]);
 	if (p->num == 0)
 		return (printf("No philo here ...\n"));
@@ -63,8 +64,6 @@ static int	init_params(t_params *p, char **ag)
 		return (printf("No time to even be born ...\n"));
 	p->time2eat = ft_atoi(ag[3]);
 	p->time2sleep = ft_atoi(ag[4]);
-	if (p->time2eat == 0 || p->time2sleep == 0)
-		return (printf("This philo is sleep or food deprived ...\n"));
 	p->max_iter = 0;
 	p->check_meal = 0;
 	p->start = 0;
@@ -74,7 +73,8 @@ static int	init_params(t_params *p, char **ag)
 		p->max_iter = ft_atoi(ag[5]);
 	}
 	p->over = 0;
-	mutex = init_params_mutex(p);
+	if (p->num > 0)
+		mutex = init_params_mutex(p);
 	return (mutex || p->num < 0 || p->time2die < 0 || p->time2eat < 0
 		|| p->time2sleep < 0 || p->max_iter < 0);
 }
