@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/04 18:57:21 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/07 15:59:17 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ static int	init_params(t_params *p, char **ag)
 		p->max_iter = ft_atoi(ag[5]);
 	}
 	p->over = 0;
-	sem = init_params_semaphore(p);
+	if (p->num > 0)
+		sem = init_params_semaphore(p);
 	return (sem || p->num < 0 || p->time2die < 0 || p->time2eat < 0
 		|| p->time2sleep < 0 || p->max_iter < 0);
 }

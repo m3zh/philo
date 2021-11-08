@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:16:12 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/04 20:24:10 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/08 08:53:03 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	check_death(t_philo *p)
 	long int	now;
 
 	now = time_now(p) - p->last_meal;
-	printf("%lu now\n", now);
 	sem_wait(p->params->death);
 	if (now > p->params->time2die)
 	{
@@ -93,8 +92,8 @@ void	*thread_routine(void *job)
 
 	starved = 0;
 	philo = (t_philo *)job;
-	// if (philo->id & 1)
-	// 	ft_usleep(2.5);
+	if (philo->id & 1)
+		ft_usleep(2.5);
 	philo->thread_start = philo->params->start;
 	philo->last_meal = time_now(philo);
 	while (!starved && !philo->dead && !philo->params->over)

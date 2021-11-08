@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:32:05 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/04 16:41:33 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/08 09:27:42 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_params
 	long int		start;
 	sem_t	*death;
 	sem_t	*fork;
+	void	*philo;
 }	t_params;
 
 typedef struct s_philo
