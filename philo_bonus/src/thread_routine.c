@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:16:12 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/08 08:53:03 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/08 10:33:06 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ int	someone_died(long int now, t_philo *p)
 	print_routine(now, p, DIE);
 	p->params->over = 1;
 	p->dead = 1;
-	sem_wait(p->params->fork);
-	sem_wait(p->params->fork);
 	return (1);
 }
 
@@ -30,7 +28,6 @@ int	check_death(t_philo *p)
 	sem_wait(p->params->death);
 	if (now > p->params->time2die)
 	{
-		p->dead = 1;
 		now = time_now(p) - p->thread_start;
 		sem_post(p->params->death);
 		return (someone_died(now, p));

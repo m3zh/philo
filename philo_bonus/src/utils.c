@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 15:32:10 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/04 16:45:15 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/08 10:36:08 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,18 @@ int	error_msg(char *s, t_params *par, t_philo *p, int malloc)
 
 int	print_routine(long int now, t_philo *p, char *action)
 {
-	sem_wait(p->params->death);
+	sem_post(p->params->death);
+	// perror("death post");
 	if (p->dead || p->params->over)
 	{
-		sem_post(p->params->death);
+		sem_wait(p->params->death);
+		// perror("death post");
 		return (1);
 	}
 	printf("[ %ld ms ] Philosopher %d %s\n", now, p->id, action);
 	if (!ft_strcmp(action, DIE))
 		p->params->check_meal = 0;
-	sem_post(p->params->death);
+	sem_wait(p->params->death);
 	return (0);
 }
 

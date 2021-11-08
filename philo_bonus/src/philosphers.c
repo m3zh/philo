@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/08 09:28:50 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/08 10:32:26 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static void	*check_thread(void *job)
 		while (++i < p->num)
 			if (check_death(&philo[i]) || check_meals(&philo[i], i))
 				p->over = 1;
-		printf("loop\n");
 	}
 	if (p->check_meal && philo[p->num - 1].iter_num == p->max_iter)
 	{
@@ -55,16 +54,16 @@ static int	init_thread(t_params *p, t_philo *philo)
 
 	i = -1;
 	p->start = time_now(philo);
-	sem_post(p->death);
 	while (++i < p->num)
 	{
 		if (pthread_create(&philo[i].life_tid, NULL,
 				&thread_routine, &philo[i]) == -1)
 			return (error_msg("Error\nFailed to create thread\n", p, philo, 2));
 	}
+	ft_usleep(150);
 	if (pthread_create(&death_tid, NULL, &check_thread, p) == -1)
 		return (error_msg("Error\nFailed to create death thread\n", p, philo, 2));
-	sem_post(p->death);
+	pthread_join(death_tid, NULL);
 	return (0);
 }
 
