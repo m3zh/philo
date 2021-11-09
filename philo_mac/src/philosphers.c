@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/05 12:40:56 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/09 18:17:55 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static void	end_thread(t_params *p, t_philo *philo)
 
 	i = -1;
 	while (++i < p->num)
-		pthread_detach(philo[i].life_tid);
+		pthread_join(philo[i].life_tid, (void *)&philo[i]);
 	pthread_mutex_destroy(p->death);
 	pthread_mutex_destroy(p->fork);
 	free(p->death);

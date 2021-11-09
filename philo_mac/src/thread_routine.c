@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:16:12 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/05 17:37:37 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/09 18:18:10 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 static int	someone_died(long int now, t_philo *p, int unlock, int print)
 {
+	if (unlock)
+	{
+		pthread_mutex_unlock(p->left_fork);
+		pthread_mutex_unlock(p->right_fork);
+	}
 	if (print)
 	{
 		print_routine(now, p, DIE);
 		p->params->over = 1;
 		p->dead = 1;
-	}
-	if (unlock)
-	{
-		pthread_mutex_unlock(p->left_fork);
-		pthread_mutex_unlock(p->right_fork);
 	}
 	return (1);
 }
@@ -38,7 +38,7 @@ int	check_death(t_philo *p)
 	{
 		now = time_now(p) - p->thread_start;
 		pthread_mutex_unlock(p->params->death);
-		return (someone_died(now, p, 0, 1));
+		return (someone_died(now, p, 1, 1));
 	}
 	pthread_mutex_unlock(p->params->death);
 	return (0);
@@ -73,9 +73,13 @@ int	ft_eat(t_philo *p)
 		return (someone_died(time_now(p), p, 1, 1));
 	p->last_meal = time_now(p);
 	if (p->params->over)
+	{
+		pthread_mutex_unlock(p->left_fork);
+		pthread_mutex_unlock(p->right_fork);
 		return (1);
+	}
 	if (print_routine(time_now(p) - p->thread_start, p, EAT))
-		return (someone_died(0, p, 1, 0));
+		return (someone_died(0, p, 1, 1));
 	if (p->params->over)
 		return (someone_died(0, p, 1, 0));
 	ft_usleep(p->params->time2eat);
@@ -90,6 +94,7 @@ void	*thread_routine(void *job)
 	int		starved;
 	t_philo	*philo;
 
+	starved = 0;
 	philo = (t_philo *)job;
 	if (philo->id & 1)
 		ft_usleep(20);

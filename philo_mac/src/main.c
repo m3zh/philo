@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/05 17:34:35 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/09 17:54:41 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int	main(int ac, char **ag)
 {
 	t_params	p;
 
+	memset(&p, 0, sizeof(p));
 	if ((ac != 5 && ac != 6) || init_params(&p, ag))
 		return (error_msg("Error: invalid arguments\n", &p, 0, 1));
 	if (philosophers(&p))
