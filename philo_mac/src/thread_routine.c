@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:16:12 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/09 18:18:10 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/10 12:32:04 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	*thread_routine(void *job)
 	starved = 0;
 	philo = (t_philo *)job;
 	if (philo->id & 1)
-		ft_usleep(20);
+		ft_usleep(7);
 	philo->thread_start = philo->params->start;
 	philo->last_meal = time_now(philo);
 	while (!philo->dead && !philo->params->over)

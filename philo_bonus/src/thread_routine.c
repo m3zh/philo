@@ -6,17 +6,25 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:16:12 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/08 10:33:06 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/10 13:13:10 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-int	someone_died(long int now, t_philo *p)
+static int	someone_died(long int now, t_philo *p, int unlock, int print)
 {
-	print_routine(now, p, DIE);
-	p->params->over = 1;
-	p->dead = 1;
+	if (unlock)
+	{
+		sem_post(p->params->fork);
+		sem_post(p->params->fork);
+	}
+	if (print)
+	{
+		print_routine(now, p, DIE);
+		p->params->over = 1;
+		p->dead = 1;
+	}
 	return (1);
 }
 
@@ -30,7 +38,7 @@ int	check_death(t_philo *p)
 	{
 		now = time_now(p) - p->thread_start;
 		sem_post(p->params->death);
-		return (someone_died(now, p));
+		return (someone_died(now, p, 1, 1));
 	}
 	sem_post(p->params->death);
 	return (0);
@@ -49,7 +57,7 @@ int	ft_sleep_and_think(t_philo *p)
 	if (p->params->over)
 		return (1);
 	if (now - p->last_meal > p->params->time2die)
-		return (someone_died(now - p->thread_start, p));
+		return (someone_died(now - p->thread_start, p, 0, 1));
 	return (0);
 }
 
@@ -57,25 +65,22 @@ int	ft_eat(t_philo *p)
 {
 	sem_wait(p->params->fork);
 	if (print_routine(time_now(p) - p->thread_start, p, FORK))
-	{
-		sem_post(p->params->fork);
-		return (1);
-	}
+		return (sem_post(p->params->fork) + 2);
 	sem_wait(p->params->fork);
 	if (print_routine(time_now(p) - p->thread_start, p, FORK))
-	{
-		sem_post(p->params->fork);
-		sem_post(p->params->fork);
-		return (1);
-	}
-	ft_usleep(p->params->time2eat);
-	if (print_routine(time_now(p) - p->thread_start, p, EAT))
-	{
-		sem_post(p->params->fork);
-		sem_post(p->params->fork);
-		return (1);
-	}
+		return (someone_died(time_now(p), p, 1, 1));
 	p->last_meal = time_now(p);
+	if (p->params->over)
+	{
+		sem_post(p->params->fork);
+		sem_post(p->params->fork);
+		return (1);
+	}
+	if (print_routine(time_now(p) - p->thread_start, p, EAT))
+		return (someone_died(0, p, 1, 1));
+	if (p->params->over)
+		return (someone_died(0, p, 1, 0));
+	ft_usleep(p->params->time2eat);
 	p->iter_num++;
 	sem_post(p->params->fork);
 	sem_post(p->params->fork);
@@ -90,7 +95,7 @@ void	*thread_routine(void *job)
 	starved = 0;
 	philo = (t_philo *)job;
 	if (philo->id & 1)
-		ft_usleep(2.5);
+		ft_usleep(7);
 	philo->thread_start = philo->params->start;
 	philo->last_meal = time_now(philo);
 	while (!starved && !philo->dead && !philo->params->over)
@@ -102,3 +107,4 @@ void	*thread_routine(void *job)
 	}
 	return (NULL);
 }
+

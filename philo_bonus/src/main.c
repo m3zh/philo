@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/09 18:00:33 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/10 12:46:01 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static int	init_params(t_params *p, char **ag)
 {
 	int	sem;
 
+	sem = -1;
 	p->num = ft_atoi(ag[1]);
 	p->forks = p->num;
 	p->time2die = ft_atoi(ag[2]);
