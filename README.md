@@ -16,6 +16,8 @@
 
 - [ ] If you get an infinite loop somewhere before the end of your code, check the way you have locked and unlocked your mutex  
 
-- [ ] If your code runs smoothly till the end (i.e. the death of a philosophers), but it gets stuck without exiting, the problem lies in `pthread_join`. `pthread_join` blocks if a thread has not terminated until it actually is, and does not return; use `pthread_detach` instead, it returns immediately without terminating the thread though.
+- [ ] If your code runs smoothly till the end (i.e. the death of a philosophers), but it gets stuck without exiting, it means there is a mutex still locked somewhere.  
+Solution 1: try `pthread_detach` instead of `pthread_join`. `pthread_join` blocks if a thread has not terminated until it actually is; `pthread_detach` returns immediately without terminating the thread (you might have leaks though, because the thread is detached but keep running in the background (if you do a while loop after detaching the thread, you'll see it running in the shell, try it out!).  
+Solution 2: another way to go about it and keep using `pthread_join` is to check that all mutex have been correctly unlocked
 
 

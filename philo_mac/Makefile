@@ -6,13 +6,13 @@
 #    By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/15 12:21:19 by mdesalle          #+#    #+#              #
-#    Updated: 2021/11/05 09:56:05 by mlazzare         ###   ########.fr        #
+#    Updated: 2021/11/10 12:26:34 by mlazzare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
-CC = gcc -g3
+CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 #CFLAGS += -fsanitize=thread
 
