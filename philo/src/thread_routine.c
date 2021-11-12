@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:16:12 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/12 16:14:26 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/12 17:54:12 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	check_death(t_philo *p)
 
 void	ft_sleep_and_think(t_philo *p)
 {
-	ft_usleep(p->params->time2sleep);
+	ft_usleep(p->params->time2eat);
 	print_routine(p, SLEEP);
 	print_routine(p, THINK);
 }
