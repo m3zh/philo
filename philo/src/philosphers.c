@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/04 13:21:38 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/12 15:21:27 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ static void	check_thread(t_params *p, t_philo *philo)
 {
 	int	i;
 
-	ft_usleep(5);
+	while (!p->ready)
+		continue ;
 	while (!p->over)
 	{
 		i = -1;
@@ -46,7 +47,6 @@ static int	init_thread(t_params *p, t_philo *philo)
 	int	i;
 
 	i = -1;
-	p->start = time_now(philo);
 	while (++i < p->num)
 	{
 		philo[i].right_fork = philo[(i + 1) % p->num].left_fork;
@@ -54,6 +54,14 @@ static int	init_thread(t_params *p, t_philo *philo)
 				&thread_routine, &philo[i]) == -1)
 			return (error_msg("Error\nFailed to create thread\n", p, philo, 2));
 	}
+	i = -1;
+	p->start = time_now(philo);
+	while (++i < p->num)
+	{
+		philo[i].thread_start = p->start;
+		philo[i].last_meal = p->start;
+	}
+	p->ready = 1;
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/02 17:04:10 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/12 15:27:32 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,9 @@ static int	init_params(t_params *p, char **ag)
 {
 	int	mutex;
 
+	mutex = -1;
 	p->num = ft_atoi(ag[1]);
-	p->forks = p->num;
+	p->ready = 0;
 	p->time2die = ft_atoi(ag[2]);
 	p->time2eat = ft_atoi(ag[3]);
 	p->time2sleep = ft_atoi(ag[4]);
@@ -68,7 +69,8 @@ static int	init_params(t_params *p, char **ag)
 		p->max_iter = ft_atoi(ag[5]);
 	}
 	p->over = 0;
-	mutex = init_params_mutex(p);
+	if (p->num > 0)
+		mutex = init_params_mutex(p);
 	return (mutex || p->num < 0 || p->time2die < 0 || p->time2eat < 0
 		|| p->time2sleep < 0 || p->max_iter < 0);
 }
