@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:16:12 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/12 17:54:12 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/12 18:01:02 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 int	someone_died(t_philo *p)
 {
 	print_routine(p, DIE);
-	p->params->over = 1;
+	p->par->over = 1;
 	p->dead = 1;
-	pthread_mutex_unlock(p->left_fork);
-	pthread_mutex_unlock(p->right_fork);
+	pthread_mutex_unlock(p->lf);
+	pthread_mutex_unlock(p->rf);
 	return (1);
 }
 
@@ -26,36 +26,36 @@ int	check_death(t_philo *p)
 {
 	long int	now;
 
-	pthread_mutex_lock(p->params->death);
-	now = time_now(p) - p->last_meal;
-	if (now > p->params->time2die)
+	pthread_mutex_lock(p->par->death);
+	now = time_now(p) - p->meal;
+	if (now > p->par->t2d)
 	{
-		pthread_mutex_unlock(p->params->death);
+		pthread_mutex_unlock(p->par->death);
 		return (someone_died(p));
 	}
-	pthread_mutex_unlock(p->params->death);
+	pthread_mutex_unlock(p->par->death);
 	return (0);
 }
 
 void	ft_sleep_and_think(t_philo *p)
 {
-	ft_usleep(p->params->time2eat);
+	ft_usleep(p->par->t2s);
 	print_routine(p, SLEEP);
 	print_routine(p, THINK);
 }
 
 void	ft_eat(t_philo *p)
 {
-	pthread_mutex_lock(p->left_fork);
+	pthread_mutex_lock(p->lf);
 	print_routine(p, FORK);
-	pthread_mutex_lock(p->right_fork);
+	pthread_mutex_lock(p->rf);
 	print_routine(p, FORK);
-	p->last_meal = time_now(p);
-	ft_usleep(p->params->time2eat);
+	p->meal = time_now(p);
+	ft_usleep(p->par->t2e);
 	print_routine(p, EAT);
 	p->iter_num++;
-	pthread_mutex_unlock(p->left_fork);
-	pthread_mutex_unlock(p->right_fork);
+	pthread_mutex_unlock(p->lf);
+	pthread_mutex_unlock(p->rf);
 }
 
 void	*thread_routine(void *job)
@@ -63,11 +63,11 @@ void	*thread_routine(void *job)
 	t_philo	*p;
 
 	p = (t_philo *)job;
-	while(!p->params->ready)
+	while(!p->par->ready)
 		continue ;
 	if (p->id & 1)
-		ft_usleep(p->params->time2eat * 0.9 + 1);
-	while (!p->params->over)
+		ft_usleep(p->par->t2e * 0.9 + 1);
+	while (!p->par->over)
 	{
 		ft_eat(p);
 		ft_sleep_and_think(p);

@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/12 15:27:32 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/12 18:01:24 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ int	init_philo(t_params *p, t_philo *philo)
 		philo[i].dead = 0;
 		philo[i].iter_num = 0;
 		philo[i].thread_start = 0;
-		philo[i].last_meal = 0;
-		philo[i].params = p;
-		philo[i].left_fork = &p->fork[i];
-		philo[i].right_fork = 0;
+		philo[i].meal = 0;
+		philo[i].par = p;
+		philo[i].lf = &p->fork[i];
+		philo[i].rf = 0;
 	}
 	return (0);
 }
@@ -57,9 +57,9 @@ static int	init_params(t_params *p, char **ag)
 	mutex = -1;
 	p->num = ft_atoi(ag[1]);
 	p->ready = 0;
-	p->time2die = ft_atoi(ag[2]);
-	p->time2eat = ft_atoi(ag[3]);
-	p->time2sleep = ft_atoi(ag[4]);
+	p->t2d = ft_atoi(ag[2]);
+	p->t2e = ft_atoi(ag[3]);
+	p->t2s = ft_atoi(ag[4]);
 	p->max_iter = 0;
 	p->check_meal = 0;
 	p->start = 0;
@@ -71,8 +71,8 @@ static int	init_params(t_params *p, char **ag)
 	p->over = 0;
 	if (p->num > 0)
 		mutex = init_params_mutex(p);
-	return (mutex || p->num < 0 || p->time2die < 0 || p->time2eat < 0
-		|| p->time2sleep < 0 || p->max_iter < 0);
+	return (mutex || p->num < 0 || p->t2d < 0 || p->t2e < 0
+		|| p->t2s < 0 || p->max_iter < 0);
 }
 
 int	main(int ac, char **ag)

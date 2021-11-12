@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 15:32:10 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/12 16:22:38 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/12 18:02:36 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@ int	error_msg(char *s, t_params *par, t_philo *p, int malloc)
 
 void	print_routine(t_philo *p, char *action)
 {
-	pthread_mutex_lock(p->params->death);
-	if (p->params->over)
+	pthread_mutex_lock(p->par->death);
+	if (p->par->over)
 	{
-		pthread_mutex_unlock(p->params->death);
+		pthread_mutex_unlock(p->par->death);
 		return ;
 	}
 	printf("%ldms %d %s\n", time_now(p) - p->thread_start,
 		p->id, action);
-	pthread_mutex_unlock(p->params->death);
+	pthread_mutex_unlock(p->par->death);
 }
 
 void	final_print(int alive)

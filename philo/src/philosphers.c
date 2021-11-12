@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/12 15:21:27 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/12 18:02:18 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static int	check_meals(t_philo p, int last)
 {
-	return (p.params->check_meal
-		&& last == p.params->num - 1
-		&& p.iter_num == p.params->max_iter);
+	return (p.par->check_meal
+		&& last == p.par->num - 1
+		&& p.iter_num == p.par->max_iter);
 }
 
 static void	check_thread(t_params *p, t_philo *philo)
@@ -49,7 +49,7 @@ static int	init_thread(t_params *p, t_philo *philo)
 	i = -1;
 	while (++i < p->num)
 	{
-		philo[i].right_fork = philo[(i + 1) % p->num].left_fork;
+		philo[i].rf = philo[(i + 1) % p->num].lf;
 		if (pthread_create(&philo[i].life_tid, NULL,
 				&thread_routine, &philo[i]) == -1)
 			return (error_msg("Error\nFailed to create thread\n", p, philo, 2));
@@ -59,7 +59,7 @@ static int	init_thread(t_params *p, t_philo *philo)
 	while (++i < p->num)
 	{
 		philo[i].thread_start = p->start;
-		philo[i].last_meal = p->start;
+		philo[i].meal = p->start;
 	}
 	p->ready = 1;
 	return (0);

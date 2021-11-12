@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:32:05 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/12 16:19:07 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/12 18:00:29 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ typedef struct s_params
 {
 	int				num;
 	int				ready;
-	int				time2die;
-	int				time2eat;
-	int				time2sleep;
+	int				t2d;
+	int				t2e;
+	int				t2s;
 	int				max_iter;
 	int				check_meal;
 	int				over;
@@ -50,11 +50,11 @@ typedef struct s_philo
 	int				dead;
 	int				iter_num;
 	long int		thread_start;
-	long int		last_meal;
+	long int		meal;
 	pthread_t		life_tid;
-	pthread_mutex_t	*left_fork;
-	pthread_mutex_t	*right_fork;
-	t_params		*params;
+	pthread_mutex_t	*lf;
+	pthread_mutex_t	*rf;
+	t_params		*par;
 }	t_philo;
 
 int			philosophers(t_params *p);
