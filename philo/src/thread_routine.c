@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:16:12 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/13 17:36:17 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/13 17:55:02 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	check_death(t_philo *p)
 	long int	now;
 
 	pthread_mutex_lock(p->par->death);
-	now = time_now(p) - p->meal;
+	now = time_now() - p->meal;
 	if (now >= p->par->t2d)
 	{
 		pthread_mutex_unlock(p->par->death);
@@ -50,7 +50,7 @@ void	ft_eat(t_philo *p)
 	print_routine(p, FORK);
 	pthread_mutex_lock(p->rf);
 	print_routine(p, FORK);
-	p->meal = time_now(p);
+	p->meal = time_now();
 	ft_usleep(p->par->t2e);
 	print_routine(p, EAT);
 	p->iter_num++;

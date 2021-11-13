@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/12 18:01:24 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/13 17:53:33 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,13 @@ static int	init_params(t_params *p, char **ag)
 
 	mutex = -1;
 	p->num = ft_atoi(ag[1]);
-	p->ready = 0;
 	p->t2d = ft_atoi(ag[2]);
 	p->t2e = ft_atoi(ag[3]);
 	p->t2s = ft_atoi(ag[4]);
 	p->max_iter = 0;
 	p->check_meal = 0;
 	p->start = 0;
+	p->ready = 0;
 	if (ag[5])
 	{
 		p->check_meal = 1;

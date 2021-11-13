@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/13 17:36:01 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/13 18:01:30 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 static int	check_meals(t_philo p, int last)
 {
-	return (p.par->check_meal
+	if (p.par->check_meal
 		&& last == p.par->num - 1
-		&& p.iter_num == p.par->max_iter);
+		&& p.iter_num == p.par->max_iter)
+		return (ft_usleep(300));
+	return (0);
 }
 
 static void	check_thread(t_params *p, t_philo *philo)
@@ -55,7 +57,7 @@ static int	init_thread(t_params *p, t_philo *philo)
 			return (error_msg("Error\nFailed to create thread\n", p, philo, 2));
 	}
 	i = -1;
-	p->start = time_now(philo);
+	p->start = time_now();
 	while (++i < p->num)
 	{
 		philo[i].thread_start = p->start;
