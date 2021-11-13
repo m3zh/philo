@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 15:32:10 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/12 18:02:36 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/13 17:40:44 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	print_routine(t_philo *p, char *action)
 		pthread_mutex_unlock(p->par->death);
 		return ;
 	}
-	printf("%ldms %d %s\n", time_now(p) - p->thread_start,
+	printf("%ldms %d %s\n", time_now() - p->thread_start,
 		p->id, action);
 	pthread_mutex_unlock(p->par->death);
 }
@@ -48,5 +48,5 @@ void	final_print(int alive)
 		printf("	(☞ﾟヮﾟ)☞ no one died today	\n");
 	else
 		printf("	¯\\_(ツ)_/¯			\n");
-	printf("						\n");	
+	printf("						\n");
 }
