@@ -18,8 +18,8 @@ You will check for death in a function parallel to thread execution.
 All threads and the check_death function need to run as parallel as possible, and thus start at the same time.
 
 - [ ] use a flag simulation->start to delay the execution until all threads are created
-- [ ] delay even or odds philosophers, so that some forks will be free for others to use, and then they can swap again. Possible delayed time time2eat * 0.5 or time2eat * 0.9 + 1, respectively waiting until the first batch is halfway through their meal, or until they're 99% done with their meal  
-- [ ] the function check_death needs to manage time like a swiss clock, checking as fast as possible if all philos are well and alive, and this brings us to performances.
+- [ ] delay even or odds philosophers, so that some forks will be free for others to use, and then they can swap again.  Possible delayed time are `time2eat * 0.5` or `time2eat * 0.9 + 1`, respectively waiting until the first batch is halfway through their meal, or until they're 99% done with their meal  
+- [ ] the function check_death needs to manage time like a swiss clock, checking as fast as possible if all philos are well and alive, which brings us to performances.
 
 ### Performance
 
