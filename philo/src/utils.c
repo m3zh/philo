@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 15:32:10 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/13 17:40:44 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/13 18:55:06 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,14 @@ int	error_msg(char *s, t_params *par, t_philo *p, int malloc)
 	i = -1;
 	if (malloc)
 	{
-		free(par->death);
-		free(par->fork);
-		if (malloc == 2)
-			while (++i < par->num)
-				free(&p[i]);
+		if (par->death)
+			free(par->death);
+		if (par->fork)
+			free(par->fork);
+		if (p)
+			free(p);
 	}		
-	return (printf("%s\n", s));
+	return (printf("%s", s));
 }
 
 void	print_routine(t_philo *p, char *action)

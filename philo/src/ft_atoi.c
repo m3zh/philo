@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/10 08:05:31 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/02 09:49:07 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/14 18:16:41 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,7 @@ int	ft_atoi(const char *str)
 		}
 		n = n * 10 + (str[i++] - '0');
 	}
+	if (sign < 0)
+		return (0);
 	return (sign * (int)n);
 }

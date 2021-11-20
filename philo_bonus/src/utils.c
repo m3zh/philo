@@ -6,67 +6,37 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 15:32:10 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/08 10:36:08 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/20 11:27:02 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	size_t i;
-
-	i = 0;
-	while (s1[i] || s2[i])
-	{
-		if (s1[i] != s2[i])
-			return (((unsigned char*)s1)[i] - ((unsigned char*)s2)[i]);
-		i++;
-	}
-	return (0);
-}
-
-size_t	ft_strlen(const char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str && str[i])
-		i++;
-	return (i);
-}
-
 int	error_msg(char *s, t_params *par, t_philo *p, int malloc)
 {
-	int	i;
-
-	i = -1;
+	sem_close(par->death);
+	sem_unlink("/death");
+	sem_close(par->fork);
+	sem_unlink("/fork");
 	if (malloc)
 	{
-		free(par->death);
-		free(par->fork);
-		if (malloc == 2)
-			while (++i < par->num)
-				free(&p[i]);
+		if (p)
+			free(p);
 	}		
-	return (write(STDERR_FILENO, s, ft_strlen(s)));
+	return (printf("%s", s));
 }
 
-int	print_routine(long int now, t_philo *p, char *action)
+void	print_routine(t_philo *p, char *action)
 {
-	sem_post(p->params->death);
-	// perror("death post");
-	if (p->dead || p->params->over)
+	sem_wait(p->par->death);
+	if (p->par->over)
 	{
-		sem_wait(p->params->death);
-		// perror("death post");
-		return (1);
+		sem_post(p->par->death);
+		return ;
 	}
-	printf("[ %ld ms ] Philosopher %d %s\n", now, p->id, action);
-	if (!ft_strcmp(action, DIE))
-		p->params->check_meal = 0;
-	sem_wait(p->params->death);
-	return (0);
+	printf("%ldms %d %s\n", time_now() - p->thread_start,
+		p->id, action);
+	sem_post(p->par->death);
 }
 
 void	final_print(int alive)
@@ -76,5 +46,5 @@ void	final_print(int alive)
 		printf("	(☞ﾟヮﾟ)☞ no one died today	\n");
 	else
 		printf("	¯\\_(ツ)_/¯			\n");
-	printf("						\n");	
+	printf("						\n");
 }

@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:31:20 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/10 12:46:01 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/14 18:13:19 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,13 @@ int	init_philo(t_params *p, t_philo *philo)
 		philo[i].iter_num = 0;
 		philo[i].thread_start = 0;
 		philo[i].last_meal = 0;
-		philo[i].params = p;
+		philo[i].par = p;
 	}
 	return (0);
 }
 
 static int	init_params_semaphore(t_params *p)
 {
-	p->death = 0;
-	p->fork = 0;
 	sem_unlink("/death");
 	sem_unlink("/fork");
 	p->death = sem_open("/death", O_CREAT, 0660, 1);
@@ -50,12 +48,12 @@ static int	init_params(t_params *p, char **ag)
 
 	sem = -1;
 	p->num = ft_atoi(ag[1]);
-	p->forks = p->num;
-	p->time2die = ft_atoi(ag[2]);
-	p->time2eat = ft_atoi(ag[3]);
-	p->time2sleep = ft_atoi(ag[4]);
-	p->max_iter = 0;
+	p->t2d = ft_atoi(ag[2]);
+	p->t2e = ft_atoi(ag[3]);
+	p->t2s = ft_atoi(ag[4]);
+	p->max_iter = -2;
 	p->check_meal = 0;
+	p->ready = 0;
 	if (ag[5])
 	{
 		p->check_meal = 1;
@@ -64,8 +62,8 @@ static int	init_params(t_params *p, char **ag)
 	p->over = 0;
 	if (p->num > 0)
 		sem = init_params_semaphore(p);
-	return (sem || p->num < 0 || p->time2die < 0 || p->time2eat < 0
-		|| p->time2sleep < 0 || p->max_iter < 0);
+	return (sem || p->num <= 0 || p->t2d <= 0 || p->t2e <= 0
+		|| p->t2s <= 0 || p->max_iter == 0 || p->max_iter == -1);
 }
 
 int	main(int ac, char **ag)

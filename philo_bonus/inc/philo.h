@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:32:05 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/11/08 10:06:15 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/11/13 18:38:28 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,17 @@
 # define EAT "is eating"
 # define SLEEP "is sleeping"
 # define THINK "is thinking"
-# define DIE "\e[0;31mDIED (ভ_ ভ)"
+# define DIE "\e[0;31mDIED (ভ_ ভ)\e[m"
 # define LEFT 0
 # define RIGHT 1
 
 typedef struct s_params
 {
 	int				num;
-	int				forks;
-	int				time2die;
-	int				time2eat;
-	int				time2sleep;
+	int				ready;
+	int				t2d;
+	int				t2e;
+	int				t2s;
 	int				max_iter;
 	int				check_meal;
 	int				over;
@@ -56,18 +56,18 @@ typedef struct s_philo
 	long int		thread_start;
 	long int		last_meal;
 	pthread_t		life_tid;
-	t_params		*params;
+	t_params		*par;
 }	t_philo;
 
 int			philosophers(t_params *p);
 int			init_philo(t_params *p, t_philo *philo);
-int			print_routine(long int	now, t_philo *p, char *action);
 int			check_death(t_philo *p);
 int			ft_atoi(const char *str);
-void		*thread_routine(void *job);
-void		ft_usleep(long int	time);
-void		final_print(int alive);
 int			error_msg(char *s, t_params *par, t_philo *p, int malloc);
-long int	time_now(t_philo *p);
+int			ft_usleep(long int time);
+void		*thread_routine(void *job);
+void		final_print(int alive);
+void		print_routine(t_philo *p, char *action);
+long int	time_now(void);
 
 #endif
