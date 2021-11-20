@@ -9,8 +9,8 @@ A thread is a routine that keeps running in the background until terminated or i
 Threads share resources, and have access to resources once at a time.  
 In real life for ex., when we use our mobile to listen to music, the music player will access the resource "sound", which is shared by other features such as, for ex., notifications, so "sound" is a shared resource and it must be accessed once at a time: when we get a text, the music player will stop for a sec, the notification pop-up will ring and then free the resource "sound" again.
 
-In philosophers, each person has a thread routine (eat-sleep-think), and forks are the shared resources.
-Forks should not be accessed by more philosophers at once: we block the access to the resource with a mutex_lock(), and we mutex_unlock() when we are done.
+In philosophers, each person has a thread routine (eat-sleep-think), and forks are the shared resources.  
+To avoid forks being accessed by more philosophers at once, we block the access with `mutex_lock()`, and we `mutex_unlock()` when we are done.
 Once the routine is implemented with the right order of actions and mutexes at the right place, we need to think about synchronisation.  
 You will check for death in a function parallel to thread execution.
 
@@ -25,7 +25,7 @@ All threads and the check_death function need to run as parallel as possible, an
 
 - [ ] Too many if/else in your thread routine will slow down your code -- the check_death() function should make all the necessary checks in parallel without slowing down the thread execution
 - [ ] Dividing is more time-consuming for a computer than multiplying, eg. `time2eat * 0.5` will take less time to calculate than `time2eat / 2`
-- [ ] Long var names take more time to execute
+- [ ] Long variables names take more time to execute (in philo you deal with milliseconds, every millisecond is precious)
 - [ ] `printf` is quite slow as a function
 - [ ] while loops such as `while (time < time2sleep) usleep(50);` will slow down your routine -- again, trust the check_death function to perform all necessary death checks (_nomen omen_)
 
