@@ -25,7 +25,7 @@ All threads and the check_death function need to run as parallel as possible, an
 
 - [ ] Too many if/else in your thread routine will slow down your code -- the check_death() function should make all the necessary checks in parallel without slowing down the thread execution
 - [ ] Dividing is more time-consuming for a computer than multiplying, eg. `time2eat * 0.5` will take less time to calculate than `time2eat / 2`
-- [ ] Long variables names take more time to execute (in philo you deal with milliseconds, every millisecond is precious)
+- [ ] Use short variable names
 - [ ] `printf` is quite slow as a function
 - [ ] while loops such as `while (time < time2sleep) usleep(50);` will slow down your routine -- again, trust the check_death function to perform all necessary death checks (_nomen omen_)
 
