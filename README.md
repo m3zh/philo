@@ -27,7 +27,7 @@ Possible delayed time are `time2eat * 0.5` or `time2eat * 0.9 + 1`, respectively
 
 - [ ] Too many if/else in the thread routine will slow down your code  
 -- better to let the check_death() function handle all the necessary checks in parallel
-- [ ] Dividing is more time-consuming for a computer than multiplying
+- [ ] Dividing is more time-consuming for a computer than multiplying  
 eg. `time2eat * 0.5` will take less time to calculate than `time2eat / 2`
 - [ ] Use short variable names
 - [ ] `printf` is quite slow as a function
