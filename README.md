@@ -19,16 +19,20 @@ You will check for death in a function parallel to the thread execution.
 All threads and the check_death function need to run as parallel as possible, and thus start at the same time.
 
 - [ ] use a flag `philo->start` to delay the execution until all threads are created
-- [ ] delay odds philosophers, so that forks will be free for even philos to use, and then they can swap again.  Possible delayed time are `time2eat * 0.5` or `time2eat * 0.9 + 1`, respectively waiting until the first batch is halfway through their meal, or until they're 99% done with their meal  
+- [ ] delay odds philosophers, so that forks will be free for even philos to use, and then they can swap again.  
+Possible delayed time are `time2eat * 0.5` or `time2eat * 0.9 + 1`, respectively waiting until the first batch is halfway through their meal, or until they're 99% done with their meal  
 - [ ] the function check_death needs to manage time like a swiss clock, checking as fast as possible if all philos are well and alive, so performances must be optimized.
 
 ### Performance
 
-- [ ] Too many if/else in the thread routine will slow down your code -- better to let the check_death() function handle all the necessary checks in parallel
-- [ ] Dividing is more time-consuming for a computer than multiplying, eg. `time2eat * 0.5` will take less time to calculate than `time2eat / 2`
+- [ ] Too many if/else in the thread routine will slow down your code  
+-- better to let the check_death() function handle all the necessary checks in parallel
+- [ ] Dividing is more time-consuming for a computer than multiplying
+eg. `time2eat * 0.5` will take less time to calculate than `time2eat / 2`
 - [ ] Use short variable names
 - [ ] `printf` is quite slow as a function
-- [ ] while loops such as `while (time < time2sleep) usleep(50);` will slow down the routine -- again, trust the check_death function to perform all necessary death checks (_nomen omen_)
+- [ ] while loops such as `while (time < time2sleep) usleep(50);` will slow down the routine  
+-- again, trust the check_death function to perform all necessary death checks (_nomen omen_)
 
 ## Bonus part - Semaphore vs Mutex  
 
@@ -38,7 +42,17 @@ All threads and the check_death function need to run as parallel as possible, an
 | pthread_mutex_init() | sem_open() |
 | pthread_mutex_lock() | sem_wait() |
 | pthread_mutex_unlock() | sem_post() |
-| pthread_mutex_destroy() | sem_unlink() sem_close() |
+| pthread_mutex_destroy() | sem_close() + sem_unlink() |  
+
+You create semaphores with sem_open(), specifiying the number of semaphores needed as last params.  
+In the case of philo:  
+`p->fork = sem_open("/fork", O_CREAT, 0660, p->num); // p->num is the number of forks` 
+
+`sem_wait()` decrements the number of semaphores by one, while `sem_post()` increases it by one.  
+When no semaphores are available, the function waits until one is unblocked.  
+
+Remember to unlink your semaphore once done, or you'll create more semaphores than needed next time you run the program.  
+To check the value of the current semaphore, you can use `sem_getvalue(sem_t *sem, int *sval);`  
 
 ## Debugging
 
