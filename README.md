@@ -7,7 +7,8 @@ Philosophers is a project about multi-threading programming, synchronisation and
 ### Multi-threading
 A thread is a routine that keeps running in the background until terminated or interrupted.  
 Threads share resources, and have access to resources once at a time.  
-In real life for ex., when we use our mobile to listen to music, the music player will access the resource "sound", which is shared by other features such as, for ex., notifications, so "sound" is a shared resource and it must be accessed once at a time: when we get a text, the music player will stop for a sec, the notification pop-up will ring and then free the resource "sound" again.
+  
+Real life example: when we use our mobile to listen to music, the music player can access the resource "sound", which is shared by other features such as, for ex., notifications; "sound" is a shared resource and it must be accessed once at a time: when we get a text, the music player will stop for a sec, the notification pop-up will ring and then free the resource "sound" again.
 
 In philosophers, each person has a thread routine (eat-sleep-think), and forks are the shared resources.  
 To avoid forks being accessed by more philosophers at once, we block the access with `mutex_lock()`, and we `mutex_unlock()` when we are done.
@@ -18,7 +19,7 @@ You will check for death in a function parallel to thread execution.
 All threads and the check_death function need to run as parallel as possible, and thus start at the same time.
 
 - [ ] use a flag simulation->start to delay the execution until all threads are created
-- [ ] delay even or odds philosophers, so that some forks will be free for others to use, and then they can swap again.  Possible delayed time are `time2eat * 0.5` or `time2eat * 0.9 + 1`, respectively waiting until the first batch is halfway through their meal, or until they're 99% done with their meal  
+- [ ] delay odds philosophers, so that forks will be free for even philos to use, and then they can swap again.  Possible delayed time are `time2eat * 0.5` or `time2eat * 0.9 + 1`, respectively waiting until the first batch is halfway through their meal, or until they're 99% done with their meal  
 - [ ] the function check_death needs to manage time like a swiss clock, checking as fast as possible if all philos are well and alive, which brings us to performances.
 
 ### Performance
