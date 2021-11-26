@@ -12,6 +12,29 @@ Real life example: with our mobile, we can both listen to music and receive noti
 
 In philosophers, each person has a thread routine (eat-sleep-think), and forks are the shared resources.  
 To avoid forks being used by more philosophers at once, we block the access with `mutex_lock()`, and we `mutex_unlock()` when we are done.
+
+ ```
+ # HOW TO INIT MUTEXES
+
+ pthread_mutex_t	*fork;
+ 
+ p->fork = malloc(sizeof(pthread_mutex_t) * p->num); # p->num is the number of philosophers
+ if (!p->fork)
+  	return (error_msg("Error\nMutex fork: malloc failed\n", p, 0, 1));
+ while (++i < p->num)
+  	if (pthread_mutex_init(&p->fork[i], NULL) == -1)
+	  	return (error_msg("Error\nMutex init failed\n", p, 0, 1));
+
+# Each philospher starts with a fork assigned by default; they then need to grab a second fork from their neighbours
+# lf: left fork; rf: right fork
+
+while (++i < p->num)
+{
+   philo[i].lf = p->fork[i]; # fork assigned by default
+   philo[i].rf = philo[(i + 1) % p->num].lf; # fork grabbed from the neighbour
+}
+ ```  
+
 Once the routine is implemented with the right order of actions and mutexes, we need to think about synchronisation.  
 You will check for death in a function parallel to and synched with the threads execution.
 
