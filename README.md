@@ -25,7 +25,8 @@ To avoid forks being used by more philosophers at once, we block the access with
   	if (pthread_mutex_init(&p->fork[i], NULL) == -1)
 	  	return (error_msg("Error\nMutex init failed\n", p, 0, 1));
 
-# Each philospher starts with a fork assigned by default; they then need to grab a second fork from their neighbours
+# Each philospher starts with a fork assigned by default;
+# they then need to grab a second fork from their neighbours
 # lf: left fork; rf: right fork
 
 while (++i < p->num)
