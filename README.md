@@ -8,7 +8,7 @@ Philosophers is a project about multi-threading programming, synchronisation and
 A thread is a routine that keeps running in the background until terminated or interrupted.  
 Threads share resources, and have access to resources once at a time.  
   
-Real life example: with our mobile, we can both listen to music and receive notifications; the music player and the notification app both share the resource "sound": when we get a text, the music player will stop for a sec, the notification pop-up will ring and then free the resource "sound" again.
+Real life example: mobiles can play music and receive notifications; the music player and the notification app both share the resource _sound_: when we get a text, the music player stops for a sec, the notification pop-up rings and then frees the resource _sound_ again.
 
 In philosophers, each person has a thread routine (eat-sleep-think), and forks are the shared resources.  
 To avoid forks being used by more philosophers at once, we block the access with `mutex_lock()`, and we `mutex_unlock()` when we are done.
