@@ -90,7 +90,7 @@ To check how many semaphores are available, you can use `sem_getvalue(sem_t *sem
 ```
 int sval;
    
-sem_getvalue(sem_t *sem, int *sval);
+sem_getvalue(sem, &sval);
 printf("sem val %d\n", sval);
       
 # This will tell you how many semaphores are actively in use 
