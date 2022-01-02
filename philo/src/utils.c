@@ -14,9 +14,6 @@
 
 int	error_msg(char *s, t_params *par, t_philo *p, int malloc)
 {
-	int	i;
-
-	i = -1;
 	if (malloc)
 	{
 		if (par->death)
