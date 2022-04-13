@@ -5,12 +5,12 @@
 Philosophers is a project about multi-threading programming, synchronisation and performance.  
 
 ### Multi-threading
-A thread is a routine that keeps running in the background until terminated or interrupted.  
+A thread is a routine running in background until terminated or interrupted.  
 Threads share resources, and have access to resources once at a time.  
   
-Real life example: mobiles can play music and receive notifications; the music player and the notification app both share the resource _sound_: when we get a text, the music player stops for a sec, the notification pop-up rings and then frees the resource _sound_ again.
+Real life example: mobiles can play music and receive notifications; the music player and the notification app both share the resource _sound_: when receiving qn s,s, the music player stops for a sec, the notification pop-up rings and then frees the resource _sound_ again.
 
-In philosophers, each person has a thread routine (eat-sleep-think), and forks are the shared resources.  
+In philosophers, each person has a _thread routine_ (eat-sleep-think), and forks are the shared resources.  
 To avoid forks being used by more philosophers at once, we block the access with `mutex_lock()`, and we `mutex_unlock()` when we are done.
 
  ```
@@ -36,14 +36,14 @@ while (++i < p->num)
 }
  ```  
 
-Once the routine is implemented with the right order of actions and mutexes, we need to think about synchronisation.  
-You will check for death in a function parallel to and synched with the threads execution.
+Once the routine is implemented with the right order of actions and mutexes, it needs to think synchronised.  
+Check for death will be done in a function parallel to and synched with the threads execution.
 
 ### Synchronisation
 All threads and the check_death function need to start at the same time to run as parallel as possible.
 
 - [ ] use a flag `philo->start` to delay the execution until all threads are created
-- [ ] delay odds philosophers, so that even philos will have enough forks to eat, and then can swap again.  
+- [ ] delay odds philosophers, so that even philos can grab forks to eat, and then can swap again. ( A philosopher can eat only if they have two forks ) 
 
    ```
    if (p->id & 1)
@@ -78,7 +78,7 @@ eg. `time2eat * 0.5` will take less time to calculate than `time2eat / 2`
 | pthread_mutex_unlock() | sem_post() |
 | pthread_mutex_destroy() | sem_close() + sem_unlink() |  
 
-You create semaphores with sem_open(), specifiying the number of semaphores needed as last params.  
+Semaphores are created with sem_open(), specifiying the number of semaphores needed as last params.  
 In the case of philo:  
 `p->fork = sem_open("/fork", O_CREAT, 0660, p->num); // p->num is the number of forks` 
 
