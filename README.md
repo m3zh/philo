@@ -8,7 +8,7 @@ Philosophers is a project about multi-threading programming, synchronisation and
 A thread is a routine running in background until terminated or interrupted.  
 Threads share resources, and have access to resources once at a time.  
   
-Real life example: mobiles can play music and receive notifications; the music player and the notification app both share the resource _sound_: when receiving qn s,s, the music player stops for a sec, the notification pop-up rings and then frees the resource _sound_ again.
+Real life example: mobiles can play music and receive notifications; the music player and the notification app both share the resource _sound_: when receiving a message, the music player stops for a sec, the notification rings and then frees the resource _sound_ again.
 
 In philosophers, each person has a _thread routine_ (eat-sleep-think), and forks are the shared resources.  
 To avoid forks being used by more philosophers at once, we block the access with `mutex_lock()`, and we `mutex_unlock()` when we are done.
@@ -36,7 +36,7 @@ while (++i < p->num)
 }
  ```  
 
-Once the routine is implemented with the right order of actions and mutexes, it needs to think synchronised.  
+Once the routine is implemented with the right order of actions and mutexes, it needs to be synchronised.  
 Check for death will be done in a function parallel to and synched with the threads execution.
 
 ### Synchronisation
@@ -82,10 +82,10 @@ Semaphores are created with sem_open(), specifiying the number of semaphores nee
 In the case of philo:  
 `p->fork = sem_open("/fork", O_CREAT, 0660, p->num); // p->num is the number of forks` 
 
-`sem_wait()` decrements the number of semaphores by one, while `sem_post()` increases it by one.  
+`sem_wait()` decreases the number of semaphores by one, while `sem_post()` increases it by one.  
 When no semaphores are available, the function waits until one is unblocked.  
 
-If you do not unlink your semaphore once done, you'll keep accumulating semaphores every time you run the program.  
+If you do not unlink your semaphore at the end of your program, you'll keep accumulating semaphores every time you run it.  
 To check how many semaphores are available, you can use `sem_getvalue(sem_t *sem, int *sval);`  
 ```
 int sval;
